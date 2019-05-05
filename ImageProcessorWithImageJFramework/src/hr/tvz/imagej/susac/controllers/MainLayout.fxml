@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="600.0" prefHeight="92.0" prefWidth="701.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.tvz.imagej.susac.controllers.MainLayoutController">
+   <children>
+      <MenuBar>
+         <menus>
+            <Menu mnemonicParsing="false" text="File">
+               <items>
+                  <MenuItem fx:id="file_menuItem_openImage" mnemonicParsing="false" onAction="#file_openImage" text="Open image..." />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="file_menuItem_closeImage" disable="true" mnemonicParsing="false" onAction="#file_closeImage" text="Close image" />
+                  <MenuItem disable="true" mnemonicParsing="false" text="Close all" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="file_menuItem_saveImage" disable="true" mnemonicParsing="false" onAction="#file_saveImage" text="Save" />
+                  <Menu fx:id="file_menu_saveAs" disable="true" mnemonicParsing="false" text="Save as...">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#file_saveImageAsBmp" text="BMP" />
+                        <MenuItem mnemonicParsing="false" onAction="#file_saveImageAsFits" text="FITS" />
+                        <MenuItem mnemonicParsing="false" onAction="#file_saveImageAsGif" text="GIF" />
+                        <MenuItem mnemonicParsing="false" onAction="#file_saveImageAsJpeg" text="JPEG" />
+                        <MenuItem mnemonicParsing="false" onAction="#file_saveImageAsLut" text="LUT" />
+                        <MenuItem mnemonicParsing="false" onAction="#file_saveImageAsPgm" text="PGM" />
+                        <MenuItem mnemonicParsing="false" onAction="#file_saveImageAsPng" text="PNG" />
+                        <MenuItem mnemonicParsing="false" onAction="#file_saveImageAsRaw" text="RAW" />
+                        <MenuItem mnemonicParsing="false" onAction="#file_saveImageAsText" text="TEXT" />
+                        <MenuItem mnemonicParsing="false" onAction="#file_saveImageAsTiff" text="TIFF" />
+                        <MenuItem mnemonicParsing="false" onAction="#file_saveImageAsZip" text="ZIP" />
+                     </items>
+                  </Menu>
+                  <MenuItem disable="true" mnemonicParsing="false" text="Save all" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="Quit" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Image">
+               <items>
+                  <Menu mnemonicParsing="false" text="Convert Type...">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#image_convertToGray8Bit" text="Gray 8-bit" />
+                        <MenuItem mnemonicParsing="false" onAction="#image_convertToGray16Bit" text="Gray 16-bit" />
+                        <MenuItem mnemonicParsing="false" onAction="#image_convertToGray32Bit" text="Gray 32-bit" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#image_convertToRGB" text="RGB" />
+                        <MenuItem mnemonicParsing="false" onAction="#image_convertToRGBStack" text="RGB Stack" />
+                        <MenuItem mnemonicParsing="false" onAction="#image_convertToHSB" text="HSB" />
+                        <MenuItem mnemonicParsing="false" onAction="#image_convertToLab" text="Lab" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#image_convertRGBStackToLab" text="RGB Stack to Lab" />
+                        <MenuItem mnemonicParsing="false" onAction="#image_convertHSBToRGB" text="HSB Stack to RGB" />
+                        <MenuItem mnemonicParsing="false" onAction="#image_convertLabToRGB" text="Lab to RGB" />
+                    </items>
+                  </Menu>
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Process">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Action 1" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Analyze">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Action 1" />
+               </items>
+            </Menu>
+         </menus>
+      </MenuBar>
+      <ToolBar prefHeight="40.0" prefWidth="200.0" />
+      <ToolBar prefHeight="20.0" prefWidth="600.0">
+         <items>
+            <Text fx:id="textMessage" strokeType="OUTSIDE" strokeWidth="0.0" />
+         </items>
+      </ToolBar>
+   </children>
+</VBox>
