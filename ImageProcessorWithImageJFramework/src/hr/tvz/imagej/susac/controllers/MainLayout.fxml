@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="600.0" prefHeight="92.0" prefWidth="701.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.tvz.imagej.susac.controllers.MainLayoutController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="600.0" prefHeight="53.0" prefWidth="701.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.tvz.imagej.susac.controllers.MainLayoutController">
    <children>
       <MenuBar>
          <menus>
@@ -40,9 +40,9 @@
                   <MenuItem mnemonicParsing="false" text="Quit" />
                </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="Image">
+            <Menu fx:id="image_menu" mnemonicParsing="false" text="Image">
                <items>
-                  <Menu mnemonicParsing="false" text="Convert Type...">
+                  <Menu fx:id="image_menu_convert_type" disable="true" mnemonicParsing="false" text="Convert Type...">
                     <items>
                       <MenuItem mnemonicParsing="false" onAction="#image_convertToGray8Bit" text="Gray 8-bit" />
                         <MenuItem mnemonicParsing="false" onAction="#image_convertToGray16Bit" text="Gray 16-bit" />
@@ -58,22 +58,28 @@
                         <MenuItem mnemonicParsing="false" onAction="#image_convertLabToRGB" text="Lab to RGB" />
                     </items>
                   </Menu>
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="image_menuItem_brightness_contrast" disable="true" mnemonicParsing="false" onAction="#image_adjustBrightnessContrast" text="Adjust Brightness/Contrast" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <Menu fx:id="image_menu_threshold" disable="true" mnemonicParsing="false" text="Thresholding">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#image_threshold" text="Adjust" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#image_threshold_auto" text="Auto" />
+                        <MenuItem mnemonicParsing="false" onAction="#image_threshold_auto_preview" text="Auto Preview" />
+                     </items>
+                  </Menu>
                </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="Process">
+            <Menu fx:id="process_menu" mnemonicParsing="false" text="Process" />
+            <Menu fx:id="analyze_menu" mnemonicParsing="false" text="Analyze">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Action 1" />
-               </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Analyze">
-               <items>
-                  <MenuItem mnemonicParsing="false" text="Action 1" />
+                  <MenuItem fx:id="analyze_menuItem_histogram" disable="true" mnemonicParsing="false" text="Histogram" />
                </items>
             </Menu>
          </menus>
       </MenuBar>
-      <ToolBar prefHeight="40.0" prefWidth="200.0" />
-      <ToolBar prefHeight="20.0" prefWidth="600.0">
+      <ToolBar prefHeight="30.0" prefWidth="702.0">
          <items>
             <Text fx:id="textMessage" strokeType="OUTSIDE" strokeWidth="0.0" />
          </items>
