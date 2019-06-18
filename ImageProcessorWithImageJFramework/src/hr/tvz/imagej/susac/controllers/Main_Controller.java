@@ -3,6 +3,8 @@ package hr.tvz.imagej.susac.controllers;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
+import hr.tvz.imagej.susac.controllers.image.Image_BrightnessContrast_Adjust_Controller;
+import hr.tvz.imagej.susac.controllers.image.Image_Threshold_Auto_Controller;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.Undo;
@@ -16,6 +18,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
@@ -27,7 +32,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import jdk.internal.loader.Loader;
 
-public class MainLayoutController {
+public class Main_Controller {
 
 	/*File - Menu items*/
 	//Image 
@@ -430,11 +435,11 @@ public class MainLayoutController {
 		
 		try {
 	        
-	        FXMLLoader loader = new FXMLLoader(getClass().getResource("AdjustBrightnessContrastLayout.fxml"));
+	        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmls/Image_BrightnessContrast_Adjust_Layout.fxml"));
 	        Parent root = (Parent) loader.load();
 	        
-	        AdjustBrightnessContrastController abc_controller = loader.<AdjustBrightnessContrastController>getController();
-	        abc_controller.setImage(current_image.getProcessor().getMin(), current_image.getProcessor().getMax(), current_image);
+	        Image_BrightnessContrast_Adjust_Controller controller = loader.<Image_BrightnessContrast_Adjust_Controller>getController();
+	        controller.setImage(current_image.getProcessor().getMin(), current_image.getProcessor().getMax(), current_image);
 	        
 	        Stage stage = new Stage();
 	        
@@ -446,10 +451,10 @@ public class MainLayoutController {
 			
 			stage.showAndWait();
 			
-			if(!abc_controller.getStageClosedOnExit()) {
+			if(!controller.getStageClosedOnExit()) {
 				ImagePlus image_backup = new ImagePlus();
 				image_backup.setImage(current_image.getImage());
-				image_backup.getProcessor().setMinAndMax(abc_controller.getCurrentMin(), abc_controller.getCurrentMax());
+				image_backup.getProcessor().setMinAndMax(controller.getCurrentMin(), controller.getCurrentMax());
 		
 				current_image.setImage(image_backup.getImage());
 			}
@@ -460,15 +465,6 @@ public class MainLayoutController {
 	}
 	
 	@FXML
-	public void image_adjustBrightnessContrast_reset() {
-		ImagePlus image_backup = new ImagePlus();
-		image_backup.setImage(current_image.getImage());
-		image_backup.getProcessor().resetMinAndMax();
-
-		current_image.setImage(image_backup.getImage());
-	}
-	
-	@FXML
 	public void analyze_histogram() {
 		HistogramWindow histogram = new HistogramWindow(current_image);
 		histogram.show();
@@ -476,27 +472,67 @@ public class MainLayoutController {
 	
 	@FXML
 	public void image_threshold() {
-		ImagePlus image_backup = new ImagePlus();
-		image_backup.setImage(current_image.getImage());
-
-		current_image.setImage(image_backup.getImage());
+		
 	}
 		
 	@FXML
 	public void image_threshold_auto() {
-		ImagePlus image_backup = new ImagePlus();
-		image_backup.setImage(current_image.getImage());
-		image_backup.getProcessor().autoThreshold();
-
-		current_image.setImage(image_backup.getImage());
+		
+		if(current_image.getType() != ImagePlus.GRAY8) {
+			Alert alert = new Alert(AlertType.WARNING, "You need to have 8-bit image!", ButtonType.OK);
+			alert.showAndWait();
+		}
+		else {
+			try {
+		        
+		        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmls/Image_Threshold_Auto_Layout.fxml"));
+		        Parent root = (Parent) loader.load();
+		        
+		        Image_Threshold_Auto_Controller controller = loader.<Image_Threshold_Auto_Controller>getController();
+		        controller.setImage(current_image);
+		        
+		        Stage stage = new Stage();
+		        
+		        stage.setResizable(false);
+		        stage.initModality(Modality.APPLICATION_MODAL);
+		        stage.initStyle(StageStyle.UTILITY);
+				stage.setTitle("Auto threshold preview for " + current_image.getTitle());
+				stage.setScene(new Scene(root));
+				
+				stage.showAndWait();
+				
+				if(!controller.getStageClosedOnExit()) {
+					ImagePlus image_backup = new ImagePlus();
+					image_backup.setImage(current_image.getImage());
+					
+					image_backup.getProcessor().setAutoThreshold(controller.getMethod(),
+																controller.getBackground(),
+																controller.getLut());
+					
+					
+					current_image.setProcessor(image_backup.getProcessor());
+				}
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	@FXML
-	public void image_threshold_auto_preview() {
-		ImagePlus image_preview = new ImagePlus();
-		image_preview.setImage(current_image.getImage());
-		image_preview.show();
-		image_preview.setTitle("PREVIEW IMAGE");
-		image_preview.getProcessor().autoThreshold();
+	public void image_threshold_auto_instant() {
+		
+		if(current_image.getType() != ImagePlus.GRAY8) {
+			Alert alert = new Alert(AlertType.WARNING, "You need to have 8-bit image!", ButtonType.OK);
+			alert.showAndWait();
+		}
+		else {
+			ImagePlus image_backup = new ImagePlus();
+			image_backup.setImage(current_image.getImage());
+		
+			image_backup.getProcessor().autoThreshold();
+		
+			current_image.setImage(image_backup.getImage());
+		}
 	}
 }

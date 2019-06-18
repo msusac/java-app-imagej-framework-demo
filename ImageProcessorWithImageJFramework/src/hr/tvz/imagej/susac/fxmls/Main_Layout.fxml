@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="600.0" prefHeight="53.0" prefWidth="701.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.tvz.imagej.susac.controllers.MainLayoutController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="600.0" prefHeight="53.0" prefWidth="701.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.tvz.imagej.susac.controllers.Main_Controller">
    <children>
       <MenuBar>
          <menus>
@@ -59,14 +59,14 @@
                     </items>
                   </Menu>
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem fx:id="image_menuItem_brightness_contrast" disable="true" mnemonicParsing="false" onAction="#image_adjustBrightnessContrast" text="Adjust Brightness/Contrast" />
+                  <MenuItem fx:id="image_menuItem_brightness_contrast" disable="true" mnemonicParsing="false" onAction="#image_adjustBrightnessContrast" text="Adjust Brightness/Contrast..." />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <Menu fx:id="image_menu_threshold" disable="true" mnemonicParsing="false" text="Thresholding">
                      <items>
-                        <MenuItem mnemonicParsing="false" onAction="#image_threshold" text="Adjust" />
+                        <MenuItem disable="true" mnemonicParsing="false" onAction="#image_threshold" text="Adjust" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" onAction="#image_threshold_auto" text="Auto" />
-                        <MenuItem mnemonicParsing="false" onAction="#image_threshold_auto_preview" text="Auto Preview" />
+                        <MenuItem mnemonicParsing="false" onAction="#image_threshold_auto" text="Auto..." />
+                        <MenuItem mnemonicParsing="false" onAction="#image_threshold_auto_instant" text="Instant Auto" />
                      </items>
                   </Menu>
                </items>

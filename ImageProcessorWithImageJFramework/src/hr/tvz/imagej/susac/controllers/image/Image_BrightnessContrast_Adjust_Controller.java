@@ -1,4 +1,4 @@
-package hr.tvz.imagej.susac.controllers;
+package hr.tvz.imagej.susac.controllers.image;
 
 import ij.ImagePlus;
 import ij.gui.HistogramWindow;
@@ -12,7 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-public class AdjustBrightnessContrastController {
+public class Image_BrightnessContrast_Adjust_Controller {
 
 	@FXML 
 	public Button button_adjust;
@@ -41,6 +41,9 @@ public class AdjustBrightnessContrastController {
 	@FXML
 	public ImageView imageView_preview;
 	
+	@FXML
+	public ImageView imageView_histogram_preview;
+	
 	public double min_current_value;
 	public double max_current_value;
 	
@@ -66,6 +69,7 @@ public class AdjustBrightnessContrastController {
 			max_current_value = slider_max.getValue();
 			label_max.setText(Integer.toString((int) slider_max.getValue()));
 		});
+		
 		
     }
 	
@@ -96,12 +100,6 @@ public class AdjustBrightnessContrastController {
 	}
 	
 	@FXML
-	public void button_histogram_action_event(ActionEvent event) {
-		HistogramWindow histogram = new HistogramWindow(image);
-		histogram.show();
-	}
-	
-	@FXML
 	public void imageView_preview_drag_over() throws NullPointerException {
 		ImagePlus image_preview_ip = new ImagePlus();
 		image_preview_ip.setImage(image.getImage());
@@ -109,6 +107,10 @@ public class AdjustBrightnessContrastController {
 		
 		Image image_preview_fx = SwingFXUtils.toFXImage(image_preview_ip.getBufferedImage(), null);
 		imageView_preview.setImage(image_preview_fx);
+		
+		HistogramWindow histogram = new HistogramWindow(image_preview_ip);
+		Image image_histogram_preview_fx = SwingFXUtils.toFXImage(histogram.getImagePlus().getBufferedImage(), null);
+		imageView_histogram_preview.setImage(image_histogram_preview_fx);
 	}
 	
 	public void setImage(Double min_value, Double max_value, ImagePlus ip) {

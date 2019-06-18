@@ -1,4 +1,4 @@
-package hr.tvz.imagej.susac.controllers;
+package hr.tvz.imagej.susac.main;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -23,7 +23,7 @@ public class Main extends Application {
 		primaryStage = stage;
 		
 		try {
-			root = (VBox)FXMLLoader.load(getClass().getResource("MainLayout.fxml"));
+			root = (VBox)FXMLLoader.load(getClass().getResource("../fxmls/Main_Layout.fxml"));
 			
 			Scene scene = new Scene(root);
 			
