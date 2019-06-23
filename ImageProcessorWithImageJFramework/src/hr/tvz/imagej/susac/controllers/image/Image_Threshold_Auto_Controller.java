@@ -2,9 +2,9 @@ package hr.tvz.imagej.susac.controllers.image;
 
 import java.awt.List;
 
-import hr.tvz.imagej.susac.enums.ThresholdBackgroundTypes;
-import hr.tvz.imagej.susac.enums.ThresholdLutTypes;
-import hr.tvz.imagej.susac.enums.ThresholdMethodTypes;
+import hr.tvz.imagej.susac.enums.Threshold_Background_Types;
+import hr.tvz.imagej.susac.enums.Threshold_Lut_Types;
+import hr.tvz.imagej.susac.enums.Threshold_Method_Types;
 import ij.ImagePlus;
 import ij.gui.HistogramWindow;
 import javafx.embed.swing.SwingFXUtils;
@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -25,16 +26,22 @@ public class Image_Threshold_Auto_Controller {
 	public Button button_cancel;
 	
 	@FXML
-	public ComboBox<ThresholdMethodTypes> comboBox_method;
+	public ComboBox<Threshold_Method_Types> comboBox_method;
 	
 	@FXML
-	public ComboBox<ThresholdBackgroundTypes> comboBox_background;
+	public ComboBox<Threshold_Background_Types> comboBox_background;
 	
 	@FXML
-	public ComboBox<ThresholdLutTypes> comboBox_lut;
+	public ComboBox<Threshold_Lut_Types> comboBox_lut;
 	
 	@FXML
 	public ImageView imageView_preview;
+	
+	@FXML
+	public Label label_minimum_threshold;
+	
+	@FXML
+	public Label label_maximum_threshold;
 	
 	private String method;
 	private Boolean background;
@@ -46,14 +53,14 @@ public class Image_Threshold_Auto_Controller {
 	
 	@FXML
 	public void initialize(){
-	    comboBox_method.getItems().addAll(ThresholdMethodTypes.values());
-	    comboBox_method.getSelectionModel().select(ThresholdMethodTypes.DEFAULT);
+	    comboBox_method.getItems().addAll(Threshold_Method_Types.values());
+	    comboBox_method.getSelectionModel().select(Threshold_Method_Types.DEFAULT);
 	    
-	    comboBox_background.getItems().addAll(ThresholdBackgroundTypes.values());
-	    comboBox_background.getSelectionModel().select(ThresholdBackgroundTypes.TRUE);
+	    comboBox_background.getItems().addAll(Threshold_Background_Types.values());
+	    comboBox_background.getSelectionModel().select(Threshold_Background_Types.TRUE);
 	    
-	    comboBox_lut.getItems().addAll(ThresholdLutTypes.values());
-	    comboBox_lut.getSelectionModel().select(ThresholdLutTypes.RED_LUT);
+	    comboBox_lut.getItems().addAll(Threshold_Lut_Types.values());
+	    comboBox_lut.getSelectionModel().select(Threshold_Lut_Types.RED_LUT);
 	}
 	
 	@FXML
@@ -85,6 +92,12 @@ public class Image_Threshold_Auto_Controller {
 		lut = comboBox_lut.getValue().getDisplayLutValue();
 		
 		image_preview_ip.getProcessor().setAutoThreshold(method, background, lut);
+		
+		int min = (int) image_preview_ip.getProcessor().getMinThreshold();
+		int max = (int)	image_preview_ip.getProcessor().getMaxThreshold();
+		
+		label_minimum_threshold.setText(String.valueOf(min));
+		label_minimum_threshold.setText(String.valueOf(max));
 		
 		Image image_preview_fx = SwingFXUtils.toFXImage(image_preview_ip.getBufferedImage(), null);
 		imageView_preview.setImage(image_preview_fx);

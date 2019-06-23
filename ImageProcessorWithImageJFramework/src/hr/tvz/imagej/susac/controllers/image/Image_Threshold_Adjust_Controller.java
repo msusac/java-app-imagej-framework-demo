@@ -1,30 +1,40 @@
 package hr.tvz.imagej.susac.controllers.image;
 
+import hr.tvz.imagej.susac.enums.Threshold_Lut_Types;
 import ij.ImagePlus;
-import ij.gui.HistogramWindow;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-public class Image_BrightnessContrast_Adjust_Controller {
+public class Image_Threshold_Adjust_Controller {
 
-	@FXML 
+	@FXML
 	public Button button_adjust;
 	
 	@FXML
 	public Button button_reset;
 	
-	@FXML 
+	@FXML
 	public Button button_cancel;
 	
 	@FXML
-	public Button button_preview;
+	public ComboBox<Threshold_Lut_Types> comboBox_lut;
+	
+	@FXML
+	public ImageView imageView_preview;
+	
+	@FXML
+	public Label label_minimum_threshold;
+	
+	@FXML
+	public Label label_maximum_threshold;
 	
 	@FXML
 	public Slider slider_min;
@@ -32,17 +42,7 @@ public class Image_BrightnessContrast_Adjust_Controller {
 	@FXML
 	public Slider slider_max;
 	
-	@FXML
-	public Label label_min;
-	
-	@FXML
-	public Label label_max;
-	
-	@FXML
-	public ImageView imageView_preview;
-	
-	@FXML
-	public ImageView imageView_histogram_preview;
+	private Integer lut;
 	
 	public double min_current_value;
 	public double max_current_value;
@@ -62,7 +62,7 @@ public class Image_BrightnessContrast_Adjust_Controller {
 
 		slider_min.valueProperty().addListener((observable, oldValue, newValue) -> {
 			min_current_value = slider_min.getValue();
-			label_min.setText(Integer.toString((int) slider_min.getValue()));
+			label_minimum_threshold.setText(Integer.toString((int) slider_min.getValue()));
 			
 			if(max_current_value <= min_current_value) {
 				slider_max.setValue(min_current_value);
@@ -71,14 +71,18 @@ public class Image_BrightnessContrast_Adjust_Controller {
         
 		slider_max.valueProperty().addListener((observable, oldValue, newValue) -> {
 			max_current_value = slider_max.getValue();
-			label_max.setText(Integer.toString((int) slider_max.getValue()));
+			label_maximum_threshold.setText(Integer.toString((int) slider_max.getValue()));
 			
 			if(max_current_value <= min_current_value) {
 				slider_min.setValue(max_current_value);
 			}
 		});
 		
-		
+		comboBox_lut.getItems().addAll(Threshold_Lut_Types.values());
+		comboBox_lut.getSelectionModel().select(Threshold_Lut_Types.RED_LUT);
+	    comboBox_lut.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+	    	lut = newValue.getDisplayLutValue();
+	    });
     }
 	
 	@FXML
@@ -94,43 +98,40 @@ public class Image_BrightnessContrast_Adjust_Controller {
 	
 	@FXML
 	public void button_reset_action_event(ActionEvent event) {
-	    slider_min.setValue(min_default_value);
-	    slider_max.setValue(max_default_value);
+	    slider_min.setValue(new Double("0"));
+	    slider_max.setValue(new Double("0"));
 	}
 	
 	@FXML
 	public void button_cancel_action_event(ActionEvent event) {
-		slider_min.setValue(min_default_value);
-		slider_max.setValue(max_default_value);
+		slider_min.setValue(new Double("0"));
+	    slider_max.setValue(new Double("0"));
 		
 		Stage stage = (Stage) button_adjust.getScene().getWindow();
 	    stage.close();
 	}
 	
 	@FXML
-	public void imageView_preview_drag_over() throws NullPointerException {
+	public void imageView_threshold_preview() {
 		ImagePlus image_preview_ip = new ImagePlus();
 		image_preview_ip.setImage(image.getImage());
 		
+		lut = comboBox_lut.getValue().getDisplayLutValue();
 		
-		image_preview_ip.getProcessor().setMinAndMax(min_current_value, max_current_value);
+		image_preview_ip.getProcessor().setThreshold(min_current_value, max_current_value, lut);
 		
 		Image image_preview_fx = SwingFXUtils.toFXImage(image_preview_ip.getBufferedImage(), null);
 		imageView_preview.setImage(image_preview_fx);
-		
-		HistogramWindow histogram = new HistogramWindow(image_preview_ip);
-		Image image_histogram_preview_fx = SwingFXUtils.toFXImage(histogram.getImagePlus().getBufferedImage(), null);
-		imageView_histogram_preview.setImage(image_histogram_preview_fx);
 	}
 	
-	public void setImage(Double min_value, Double max_value, ImagePlus ip) {
+	public void setImage(ImagePlus ip) {
 		image = new ImagePlus();
 		
-		this.slider_min.setValue(min_value);
-		this.slider_max.setValue(max_value);
-		this.min_default_value = min_value;
-		this.max_default_value = max_value;
 		this.image.setImage(ip.getImage());
+	}
+	
+	public Boolean getStageClosedOnExit() {
+		return stage_closed_on_exit_status;
 	}
 	
 	public Double getCurrentMin() {
@@ -141,7 +142,7 @@ public class Image_BrightnessContrast_Adjust_Controller {
 		return max_current_value;
 	}
 	
-	public Boolean getStageClosedOnExit() {
-		return stage_closed_on_exit_status;
+	public Integer getLut() {
+		return lut;
 	}
 }

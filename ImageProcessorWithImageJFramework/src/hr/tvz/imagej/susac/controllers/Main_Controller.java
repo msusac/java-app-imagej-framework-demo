@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 import hr.tvz.imagej.susac.controllers.image.Image_BrightnessContrast_Adjust_Controller;
+import hr.tvz.imagej.susac.controllers.image.Image_Threshold_Adjust_Controller;
 import hr.tvz.imagej.susac.controllers.image.Image_Threshold_Auto_Controller;
 import ij.IJ;
 import ij.ImagePlus;
@@ -456,7 +457,7 @@ public class Main_Controller {
 				image_backup.setImage(current_image.getImage());
 				image_backup.getProcessor().setMinAndMax(controller.getCurrentMin(), controller.getCurrentMax());
 		
-				current_image.setImage(image_backup.getImage());
+				current_image.setProcessor(image_backup.getProcessor());
 			}
 		}
 		catch(Exception e) {
@@ -469,17 +470,13 @@ public class Main_Controller {
 		HistogramWindow histogram = new HistogramWindow(current_image);
 		histogram.show();
 	}
-	
-	@FXML
-	public void image_threshold() {
-		
-	}
 		
 	@FXML
 	public void image_threshold_auto() {
 		
 		if(current_image.getType() != ImagePlus.GRAY8) {
 			Alert alert = new Alert(AlertType.WARNING, "You need to have 8-bit image!", ButtonType.OK);
+			alert.setTitle("Threshold Warning!");
 			alert.showAndWait();
 		}
 		else {
@@ -524,6 +521,7 @@ public class Main_Controller {
 		
 		if(current_image.getType() != ImagePlus.GRAY8) {
 			Alert alert = new Alert(AlertType.WARNING, "You need to have 8-bit image!", ButtonType.OK);
+			alert.setTitle("Threshold Warning!");
 			alert.showAndWait();
 		}
 		else {
@@ -533,6 +531,51 @@ public class Main_Controller {
 			image_backup.getProcessor().autoThreshold();
 		
 			current_image.setImage(image_backup.getImage());
+		}
+	}
+	
+	@FXML
+	public void image_threshold_adjust() {
+		
+		if(current_image.getType() != ImagePlus.GRAY8) {
+			Alert alert = new Alert(AlertType.WARNING, "You need to have 8-bit image!", ButtonType.OK);
+			alert.setTitle("Threshold Warning!");
+			alert.showAndWait();
+		}
+		else {
+			try {
+		        
+		        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmls/Image_Threshold_Adjust_Layout.fxml"));
+		        Parent root = (Parent) loader.load();
+		        
+		        Image_Threshold_Adjust_Controller controller = loader.<Image_Threshold_Adjust_Controller>getController();
+		        controller.setImage(current_image);
+		        
+		        Stage stage = new Stage();
+		        
+		        stage.setResizable(false);
+		        stage.initModality(Modality.APPLICATION_MODAL);
+		        stage.initStyle(StageStyle.UTILITY);
+				stage.setTitle("Adjust threshold preview for " + current_image.getTitle());
+				stage.setScene(new Scene(root));
+				
+				stage.showAndWait();
+				
+				if(!controller.getStageClosedOnExit()) {
+					ImagePlus image_backup = new ImagePlus();
+					image_backup.setImage(current_image.getImage());
+					
+					image_backup.getProcessor().setThreshold(controller.getCurrentMin(), 
+															 controller.getCurrentMax(),
+															 controller.getLut());
+					
+					
+					current_image.setProcessor(image_backup.getProcessor());
+				}
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

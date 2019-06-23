@@ -63,7 +63,7 @@
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <Menu fx:id="image_menu_threshold" disable="true" mnemonicParsing="false" text="Thresholding">
                      <items>
-                        <MenuItem disable="true" mnemonicParsing="false" onAction="#image_threshold" text="Adjust" />
+                        <MenuItem mnemonicParsing="false" onAction="#image_threshold_adjust" text="Adjust" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem mnemonicParsing="false" onAction="#image_threshold_auto" text="Auto..." />
                         <MenuItem mnemonicParsing="false" onAction="#image_threshold_auto_instant" text="Instant Auto" />

@@ -1,6 +1,6 @@
 package hr.tvz.imagej.susac.enums;
 
-public enum ThresholdMethodTypes {
+public enum Threshold_Method_Types {
 
 	DEFAULT("Default"), 
 	HUANG("Huang"),
@@ -22,7 +22,7 @@ public enum ThresholdMethodTypes {
 	
 	private final String displayMethodName;
 	
-	ThresholdMethodTypes(String displayMethodName){
+	Threshold_Method_Types(String displayMethodName){
 		this.displayMethodName = displayMethodName;
 	}
 	
