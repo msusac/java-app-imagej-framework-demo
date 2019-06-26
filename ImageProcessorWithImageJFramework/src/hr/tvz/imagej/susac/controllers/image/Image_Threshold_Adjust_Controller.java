@@ -2,6 +2,7 @@ package hr.tvz.imagej.susac.controllers.image;
 
 import hr.tvz.imagej.susac.enums.Threshold_Lut_Types;
 import ij.ImagePlus;
+import ij.process.ImageProcessor;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -44,18 +45,15 @@ public class Image_Threshold_Adjust_Controller {
 	
 	private Integer lut;
 	
-	public double min_current_value;
-	public double max_current_value;
+	private double min_current_value;
+	private double max_current_value;
 	
-	public double min_default_value;
-	public double max_default_value;
-	
-	public double min_return_value;
-	public double max_return_value;
+	private double default_value = new Double(0);
 	
 	public boolean stage_closed_on_exit_status = true;
 	
 	public ImagePlus image = new ImagePlus();
+	private ImagePlus image_preview_ip = new ImagePlus();
 	
 	@FXML
 	public void initialize(){
@@ -88,8 +86,6 @@ public class Image_Threshold_Adjust_Controller {
 	@FXML
 	public void button_adjust_action_event(ActionEvent event) {
 		
-		min_return_value = min_current_value;
-		max_return_value = max_current_value;
 		stage_closed_on_exit_status = false;
 		
 	    Stage stage = (Stage) button_adjust.getScene().getWindow();
@@ -98,14 +94,18 @@ public class Image_Threshold_Adjust_Controller {
 	
 	@FXML
 	public void button_reset_action_event(ActionEvent event) {
-	    slider_min.setValue(new Double("0"));
-	    slider_max.setValue(new Double("0"));
+	    
+		slider_min.setValue(default_value);
+	    slider_max.setValue(default_value);
+	    
+	    min_current_value = slider_min.getValue();
+	    max_current_value = slider_max.getValue();
 	}
 	
 	@FXML
 	public void button_cancel_action_event(ActionEvent event) {
-		slider_min.setValue(new Double("0"));
-	    slider_max.setValue(new Double("0"));
+		
+		stage_closed_on_exit_status = true;
 		
 		Stage stage = (Stage) button_adjust.getScene().getWindow();
 	    stage.close();
@@ -113,7 +113,8 @@ public class Image_Threshold_Adjust_Controller {
 	
 	@FXML
 	public void imageView_threshold_preview() {
-		ImagePlus image_preview_ip = new ImagePlus();
+		
+		image_preview_ip = new ImagePlus();
 		image_preview_ip.setImage(image.getImage());
 		
 		lut = comboBox_lut.getValue().getDisplayLutValue();
@@ -125,24 +126,17 @@ public class Image_Threshold_Adjust_Controller {
 	}
 	
 	public void setImage(ImagePlus ip) {
+		
 		image = new ImagePlus();
 		
 		this.image.setImage(ip.getImage());
 	}
 	
-	public Boolean getStageClosedOnExit() {
+	public boolean getStageClosedOnExit() {
 		return stage_closed_on_exit_status;
 	}
 	
-	public Double getCurrentMin() {
-		return min_current_value;
-	}
-	
-	public Double getCurrentMax() {
-		return max_current_value;
-	}
-	
-	public Integer getLut() {
-		return lut;
+	public ImageProcessor getImageProcessor() {
+		return image_preview_ip.getProcessor();
 	}
 }

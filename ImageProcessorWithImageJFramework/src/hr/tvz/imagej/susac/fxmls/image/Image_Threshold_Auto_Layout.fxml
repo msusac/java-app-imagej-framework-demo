@@ -12,14 +12,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseMoved="#image_preview_threshold_preview" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.tvz.imagej.susac.controllers.image.Image_Threshold_Auto_Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseMoved="#imageView_threshold_preview" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.tvz.imagej.susac.controllers.image.Image_Threshold_Auto_Controller">
    <center>
       <ImageView fx:id="imageView_preview" fitHeight="350.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="20.0" left="20.0" right="20.0" top="35.0" />
          </BorderPane.margin>
          <image>
-            <Image url="@../../../../../../../../../Desktop/ImageJ/examples/clown.jpg" />
+            <Image url="@../../../../../../../template_image.png" />
          </image>
       </ImageView>
    </center>

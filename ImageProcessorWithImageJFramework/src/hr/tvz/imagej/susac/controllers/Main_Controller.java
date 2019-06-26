@@ -1,20 +1,18 @@
 package hr.tvz.imagej.susac.controllers;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 import hr.tvz.imagej.susac.controllers.image.Image_BrightnessContrast_Adjust_Controller;
 import hr.tvz.imagej.susac.controllers.image.Image_Threshold_Adjust_Controller;
 import hr.tvz.imagej.susac.controllers.image.Image_Threshold_Auto_Controller;
+import hr.tvz.imagej.susac.controllers.process.Process_Add_Noise_Controller;
+import hr.tvz.imagej.susac.controllers.process.Process_Filter_Controller;
+import hr.tvz.imagej.susac.controllers.process.Process_Shadow_Controller;
 import ij.IJ;
 import ij.ImagePlus;
-import ij.Undo;
-import ij.gui.HistogramWindow;
 import ij.io.FileSaver;
-import ij.plugin.ContrastEnhancer;
-import ij.plugin.Resizer;
+import ij.plugin.filter.RankFilters;
 import ij.process.ImageConverter;
-import ij.process.ImageProcessor;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -24,14 +22,10 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import jdk.internal.loader.Loader;
 
 public class Main_Controller {
 
@@ -50,9 +44,6 @@ public class Main_Controller {
 	public MenuItem image_menuItem_brightness_contrast;
 	
 	@FXML
-	public MenuItem analyze_menuItem_histogram;
-	
-	@FXML
 	public Menu file_menu_saveAs;
 	
 	@FXML
@@ -60,6 +51,27 @@ public class Main_Controller {
 	
 	@FXML
 	public Menu image_menu_threshold;
+	
+	@FXML
+	public MenuItem process_menuItem_find_edges;
+	
+	@FXML
+	public MenuItem process_menuItem_filters;
+	
+	@FXML
+	public MenuItem process_menuItem_invert;
+	
+	@FXML
+	public MenuItem process_menuItem_shadow;
+	
+	@FXML
+	public MenuItem process_menuItem_sharpen;
+	
+	@FXML
+	public MenuItem process_menuItem_smooth;
+	
+	@FXML 
+	public MenuItem process_menu_noise;
 	
 	@FXML
 	public Text textMessage;
@@ -376,9 +388,15 @@ public class Main_Controller {
 		file_menuItem_saveImage.setDisable(false);
 		file_menu_saveAs.setDisable(false);
 		image_menuItem_brightness_contrast.setDisable(false);
-		analyze_menuItem_histogram.setDisable(false);
 		image_menu_convert_type.setDisable(false);
 		image_menu_threshold.setDisable(false);
+		process_menuItem_find_edges.setDisable(false);
+		process_menuItem_filters.setDisable(false);
+		process_menuItem_invert.setDisable(false);
+	    process_menuItem_shadow.setDisable(false);
+		process_menuItem_sharpen.setDisable(false);
+		process_menuItem_smooth.setDisable(false);
+		process_menu_noise.setDisable(false);
 	}
 	
 	public void onImageClosed() {
@@ -387,9 +405,15 @@ public class Main_Controller {
 		file_menuItem_saveImage.setDisable(true);
 		file_menu_saveAs.setDisable(true);
 		image_menuItem_brightness_contrast.setDisable(true);
-		analyze_menuItem_histogram.setDisable(true);
 		image_menu_convert_type.setDisable(true);
 		image_menu_threshold.setDisable(true);
+		process_menuItem_find_edges.setDisable(true);
+		process_menuItem_filters.setDisable(true);
+		process_menuItem_invert.setDisable(true);
+	    process_menuItem_shadow.setDisable(true);
+		process_menuItem_sharpen.setDisable(true);
+		process_menuItem_smooth.setDisable(true);
+		process_menu_noise.setDisable(true);
 		
 	}
 	
@@ -436,7 +460,7 @@ public class Main_Controller {
 		
 		try {
 	        
-	        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmls/Image_BrightnessContrast_Adjust_Layout.fxml"));
+	        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmls/image/Image_BrightnessContrast_Adjust_Layout.fxml"));
 	        Parent root = (Parent) loader.load();
 	        
 	        Image_BrightnessContrast_Adjust_Controller controller = loader.<Image_BrightnessContrast_Adjust_Controller>getController();
@@ -453,11 +477,7 @@ public class Main_Controller {
 			stage.showAndWait();
 			
 			if(!controller.getStageClosedOnExit()) {
-				ImagePlus image_backup = new ImagePlus();
-				image_backup.setImage(current_image.getImage());
-				image_backup.getProcessor().setMinAndMax(controller.getCurrentMin(), controller.getCurrentMax());
-		
-				current_image.setProcessor(image_backup.getProcessor());
+				current_image.setProcessor(controller.getImageProcessor());
 			}
 		}
 		catch(Exception e) {
@@ -465,12 +485,6 @@ public class Main_Controller {
 		}
 	}
 	
-	@FXML
-	public void analyze_histogram() {
-		HistogramWindow histogram = new HistogramWindow(current_image);
-		histogram.show();
-	}
-		
 	@FXML
 	public void image_threshold_auto() {
 		
@@ -482,7 +496,7 @@ public class Main_Controller {
 		else {
 			try {
 		        
-		        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmls/Image_Threshold_Auto_Layout.fxml"));
+		        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmls/image/Image_Threshold_Auto_Layout.fxml"));
 		        Parent root = (Parent) loader.load();
 		        
 		        Image_Threshold_Auto_Controller controller = loader.<Image_Threshold_Auto_Controller>getController();
@@ -499,15 +513,7 @@ public class Main_Controller {
 				stage.showAndWait();
 				
 				if(!controller.getStageClosedOnExit()) {
-					ImagePlus image_backup = new ImagePlus();
-					image_backup.setImage(current_image.getImage());
-					
-					image_backup.getProcessor().setAutoThreshold(controller.getMethod(),
-																controller.getBackground(),
-																controller.getLut());
-					
-					
-					current_image.setProcessor(image_backup.getProcessor());
+					current_image.setProcessor(controller.getImageProcessor());
 				}
 			}
 			catch(Exception e) {
@@ -530,7 +536,7 @@ public class Main_Controller {
 		
 			image_backup.getProcessor().autoThreshold();
 		
-			current_image.setImage(image_backup.getImage());
+			current_image.setProcessor(image_backup.getProcessor());
 		}
 	}
 	
@@ -545,7 +551,7 @@ public class Main_Controller {
 		else {
 			try {
 		        
-		        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmls/Image_Threshold_Adjust_Layout.fxml"));
+		        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmls/image/Image_Threshold_Adjust_Layout.fxml"));
 		        Parent root = (Parent) loader.load();
 		        
 		        Image_Threshold_Adjust_Controller controller = loader.<Image_Threshold_Adjust_Controller>getController();
@@ -562,20 +568,152 @@ public class Main_Controller {
 				stage.showAndWait();
 				
 				if(!controller.getStageClosedOnExit()) {
-					ImagePlus image_backup = new ImagePlus();
-					image_backup.setImage(current_image.getImage());
-					
-					image_backup.getProcessor().setThreshold(controller.getCurrentMin(), 
-															 controller.getCurrentMax(),
-															 controller.getLut());
-					
-					
-					current_image.setProcessor(image_backup.getProcessor());
+					current_image.setProcessor(controller.getImageProcessor());
 				}
 			}
 			catch(Exception e) {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	@FXML
+	public void process_find_edges() {
+		ImagePlus image_backup = new ImagePlus();
+		image_backup.setImage(current_image.getImage());
+	
+		image_backup.getProcessor().findEdges();
+	
+		current_image.setProcessor(image_backup.getProcessor());
+	}
+	
+	@FXML
+	public void process_invert() {
+		ImagePlus image_backup = new ImagePlus();
+		image_backup.setImage(current_image.getImage());
+	
+		image_backup.getProcessor().invert();
+	
+		current_image.setProcessor(image_backup.getProcessor());
+	}
+	
+	@FXML
+	public void process_filter() {
+		try {
+	        
+	        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmls/process/Process_Filter_Layout.fxml"));
+	        Parent root = (Parent) loader.load();
+	        
+	        Process_Filter_Controller controller = loader.<Process_Filter_Controller>getController();
+	        controller.setImage(current_image);
+	        
+	        Stage stage = new Stage();
+	        
+	        stage.setResizable(false);
+	        stage.initModality(Modality.APPLICATION_MODAL);
+	        stage.initStyle(StageStyle.UTILITY);
+			stage.setTitle("Shadow preview for " + current_image.getTitle());
+			stage.setScene(new Scene(root));
+			
+			stage.showAndWait();
+			
+			if(!controller.getStageClosedOnExit()) {
+				current_image.setProcessor(controller.getImageProcessor());
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@FXML
+	public void process_shadow() {
+		
+		try {
+	        
+	        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmls/process/Process_Shadow_Layout.fxml"));
+	        Parent root = (Parent) loader.load();
+	        
+	        Process_Shadow_Controller controller = loader.<Process_Shadow_Controller>getController();
+	        controller.setImage(current_image);
+	        
+	        Stage stage = new Stage();
+	        
+	        stage.setResizable(false);
+	        stage.initModality(Modality.APPLICATION_MODAL);
+	        stage.initStyle(StageStyle.UTILITY);
+			stage.setTitle("Shadow preview for " + current_image.getTitle());
+			stage.setScene(new Scene(root));
+			
+			stage.showAndWait();
+			
+			if(!controller.getStageClosedOnExit()) {
+				current_image.setProcessor(controller.getImageProcessor());
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@FXML
+	public void process_sharpen() {
+		ImagePlus image_backup = new ImagePlus();
+		image_backup.setImage(current_image.getImage());
+	
+		image_backup.getProcessor().sharpen();
+	
+		current_image.setProcessor(image_backup.getProcessor());
+	}
+	
+	@FXML
+	public void process_smooth() {
+		ImagePlus image_backup = new ImagePlus();
+		image_backup.setImage(current_image.getImage());
+	
+		image_backup.getProcessor().smooth();
+	
+		current_image.setProcessor(image_backup.getProcessor());
+	}
+	
+	@FXML
+	public void process_noise_add() {
+		try {
+	        
+	        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmls/process/Process_Add_Noise_Layout.fxml"));
+	        Parent root = (Parent) loader.load();
+	        
+	        Process_Add_Noise_Controller controller = loader.<Process_Add_Noise_Controller>getController();
+	        controller.setImage(current_image);
+	        
+	        Stage stage = new Stage();
+	        
+	        stage.setResizable(false);
+	        stage.initModality(Modality.APPLICATION_MODAL);
+	        stage.initStyle(StageStyle.UTILITY);
+			stage.setTitle("Add noise preview for " + current_image.getTitle());
+			stage.setScene(new Scene(root));
+			
+			stage.showAndWait();
+			
+			if(!controller.getStageClosedOnExit()) {
+				current_image.setProcessor(controller.getImageProcessor());
+			}
+			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@FXML
+	public void process_noise_despekle() {
+		ImagePlus image_backup = new ImagePlus();
+		image_backup.setImage(current_image.getImage());
+	
+		RankFilters filter = new RankFilters();
+		filter.rank(image_backup.getProcessor(), 1.0, RankFilters.MEDIAN);
+	
+		current_image.setProcessor(image_backup.getProcessor());
 	}
 }

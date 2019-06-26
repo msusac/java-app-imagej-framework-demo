@@ -2,6 +2,7 @@ package hr.tvz.imagej.susac.controllers.image;
 
 import ij.ImagePlus;
 import ij.gui.HistogramWindow;
+import ij.process.ImageProcessor;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -44,18 +45,16 @@ public class Image_BrightnessContrast_Adjust_Controller {
 	@FXML
 	public ImageView imageView_histogram_preview;
 	
-	public double min_current_value;
-	public double max_current_value;
+	private boolean stage_closed_on_exit_status = true;
 	
-	public double min_default_value;
-	public double max_default_value;
+	private double min_current_value;
+	private double max_current_value;
 	
-	public double min_return_value;
-	public double max_return_value;
+	private double min_default_value;
+	private double max_default_value;
 	
-	public boolean stage_closed_on_exit_status = true;
-	
-	public ImagePlus image = new ImagePlus();
+	private ImagePlus image = new ImagePlus();
+	private ImagePlus image_preview_ip = new ImagePlus();
 	
 	@FXML
 	public void initialize(){
@@ -77,15 +76,11 @@ public class Image_BrightnessContrast_Adjust_Controller {
 				slider_min.setValue(max_current_value);
 			}
 		});
-		
-		
     }
 	
 	@FXML
 	public void button_adjust_action_event(ActionEvent event) {
 		
-		min_return_value = min_current_value;
-		max_return_value = max_current_value;
 		stage_closed_on_exit_status = false;
 		
 	    Stage stage = (Stage) button_adjust.getScene().getWindow();
@@ -94,14 +89,15 @@ public class Image_BrightnessContrast_Adjust_Controller {
 	
 	@FXML
 	public void button_reset_action_event(ActionEvent event) {
-	    slider_min.setValue(min_default_value);
+	    
+		slider_min.setValue(min_default_value);
 	    slider_max.setValue(max_default_value);
 	}
 	
 	@FXML
 	public void button_cancel_action_event(ActionEvent event) {
-		slider_min.setValue(min_default_value);
-		slider_max.setValue(max_default_value);
+		
+		stage_closed_on_exit_status = true;
 		
 		Stage stage = (Stage) button_adjust.getScene().getWindow();
 	    stage.close();
@@ -109,7 +105,8 @@ public class Image_BrightnessContrast_Adjust_Controller {
 	
 	@FXML
 	public void imageView_preview_drag_over() throws NullPointerException {
-		ImagePlus image_preview_ip = new ImagePlus();
+		
+		image_preview_ip = new ImagePlus();
 		image_preview_ip.setImage(image.getImage());
 		
 		
@@ -124,6 +121,7 @@ public class Image_BrightnessContrast_Adjust_Controller {
 	}
 	
 	public void setImage(Double min_value, Double max_value, ImagePlus ip) {
+		
 		image = new ImagePlus();
 		
 		this.slider_min.setValue(min_value);
@@ -133,15 +131,11 @@ public class Image_BrightnessContrast_Adjust_Controller {
 		this.image.setImage(ip.getImage());
 	}
 	
-	public Double getCurrentMin() {
-		return min_current_value;
-	}
-	
-	public Double getCurrentMax() {
-		return max_current_value;
-	}
-	
-	public Boolean getStageClosedOnExit() {
+	public boolean getStageClosedOnExit() {
 		return stage_closed_on_exit_status;
+	}
+	
+	public ImageProcessor getImageProcessor() {
+		return image_preview_ip.getProcessor();
 	}
 }

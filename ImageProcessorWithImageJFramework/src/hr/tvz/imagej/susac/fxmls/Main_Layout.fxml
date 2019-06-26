@@ -63,7 +63,7 @@
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <Menu fx:id="image_menu_threshold" disable="true" mnemonicParsing="false" text="Thresholding">
                      <items>
-                        <MenuItem mnemonicParsing="false" onAction="#image_threshold_adjust" text="Adjust" />
+                        <MenuItem mnemonicParsing="false" onAction="#image_threshold_adjust" text="Adjust..." />
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem mnemonicParsing="false" onAction="#image_threshold_auto" text="Auto..." />
                         <MenuItem mnemonicParsing="false" onAction="#image_threshold_auto_instant" text="Instant Auto" />
@@ -71,12 +71,24 @@
                   </Menu>
                </items>
             </Menu>
-            <Menu fx:id="process_menu" mnemonicParsing="false" text="Process" />
-            <Menu fx:id="analyze_menu" mnemonicParsing="false" text="Analyze">
+            <Menu fx:id="process_menu" mnemonicParsing="false" text="Process">
                <items>
-                  <MenuItem fx:id="analyze_menuItem_histogram" disable="true" mnemonicParsing="false" text="Histogram" />
-               </items>
-            </Menu>
+                  <MenuItem fx:id="process_menuItem_filters" disable="true" mnemonicParsing="false" onAction="#process_filter" text="Filters..." />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="process_menuItem_find_edges" disable="true" mnemonicParsing="false" onAction="#process_find_edges" text="Find Edges" />
+                  <MenuItem fx:id="process_menuItem_invert" disable="true" mnemonicParsing="false" onAction="#process_invert" text="Invert" />
+                  <MenuItem fx:id="process_menuItem_sharpen" disable="true" mnemonicParsing="false" onAction="#process_sharpen" text="Sharpen" />
+                  <MenuItem fx:id="process_menuItem_smooth" disable="true" mnemonicParsing="false" onAction="#process_smooth" text="Smooth" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <Menu fx:id="process_menu_noise" disable="true" mnemonicParsing="false" text="Noise">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#process_noise_add" text="Add" />
+                        <MenuItem mnemonicParsing="false" onAction="#process_noise_despekle" text="Despeckle" />
+                    </items>
+                  </Menu>
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="process_menuItem_shadow" disable="true" mnemonicParsing="false" onAction="#process_shadow" text="Shadow" />
+               </items></Menu>
          </menus>
       </MenuBar>
       <ToolBar prefHeight="30.0" prefWidth="702.0">

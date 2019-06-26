@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="522.0" prefWidth="721.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.tvz.imagej.susac.controllers.image.Image_BrightnessContrast_Adjust_Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseMoved="#imageView_preview_drag_over" prefHeight="522.0" prefWidth="721.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.tvz.imagej.susac.controllers.image.Image_BrightnessContrast_Adjust_Controller">
    <top>
       <GridPane prefHeight="176.0" prefWidth="600.0" BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -37,12 +37,12 @@
                   <Font name="Arial Black" size="24.0" />
                </font>
             </Text>
-            <Slider fx:id="slider_min" max="255.0" onKeyPressed="#imageView_preview_drag_over" onKeyReleased="#imageView_preview_drag_over" onMouseDragged="#imageView_preview_drag_over" onMouseMoved="#imageView_preview_drag_over" onMouseReleased="#imageView_preview_drag_over" GridPane.rowIndex="1">
+            <Slider fx:id="slider_min" majorTickUnit="50.0" max="255.0" onKeyPressed="#imageView_preview_drag_over" onKeyReleased="#imageView_preview_drag_over" onMouseDragged="#imageView_preview_drag_over" onMouseMoved="#imageView_preview_drag_over" onMouseReleased="#imageView_preview_drag_over" showTickLabels="true" showTickMarks="true" GridPane.rowIndex="1">
                <padding>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </padding>
             </Slider>
-            <Slider fx:id="slider_max" max="255.0" onKeyPressed="#imageView_preview_drag_over" onKeyReleased="#imageView_preview_drag_over" onMouseDragged="#imageView_preview_drag_over" onMouseMoved="#imageView_preview_drag_over" onMouseReleased="#imageView_preview_drag_over" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Slider fx:id="slider_max" majorTickUnit="50.0" max="255.0" onKeyPressed="#imageView_preview_drag_over" onKeyReleased="#imageView_preview_drag_over" onMouseDragged="#imageView_preview_drag_over" onMouseMoved="#imageView_preview_drag_over" onMouseReleased="#imageView_preview_drag_over" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <padding>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </padding>
@@ -102,7 +102,7 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </BorderPane.margin>
          <image>
-            <Image url="@../../../../../../../../../Desktop/ImageJ/examples/clown.jpg" />
+            <Image url="@../../../../../../../template_image.png" />
          </image>
       </ImageView>
    </center>
@@ -112,7 +112,7 @@
             <Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
          </BorderPane.margin>
          <image>
-            <Image url="@../../../../../../../../../Desktop/ImageJ/examples/clown.jpg" />
+            <Image url="@../../../../../../../template_image.png" />
          </image>
       </ImageView>
    </right>

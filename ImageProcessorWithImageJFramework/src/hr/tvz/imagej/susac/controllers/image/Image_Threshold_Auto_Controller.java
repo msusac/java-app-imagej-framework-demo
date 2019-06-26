@@ -1,12 +1,10 @@
 package hr.tvz.imagej.susac.controllers.image;
 
-import java.awt.List;
-
 import hr.tvz.imagej.susac.enums.Threshold_Background_Types;
 import hr.tvz.imagej.susac.enums.Threshold_Lut_Types;
 import hr.tvz.imagej.susac.enums.Threshold_Method_Types;
 import ij.ImagePlus;
-import ij.gui.HistogramWindow;
+import ij.process.ImageProcessor;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -47,12 +45,14 @@ public class Image_Threshold_Auto_Controller {
 	private Boolean background;
 	private Integer lut;
 	
-	public boolean stage_closed_on_exit_status = true;
+	private boolean stage_closed_on_exit_status = true;
 	
-	public ImagePlus image = new ImagePlus();
+	private ImagePlus image = new ImagePlus();
+	private ImagePlus image_preview_ip = new ImagePlus();
 	
 	@FXML
 	public void initialize(){
+		
 	    comboBox_method.getItems().addAll(Threshold_Method_Types.values());
 	    comboBox_method.getSelectionModel().select(Threshold_Method_Types.DEFAULT);
 	    
@@ -83,8 +83,9 @@ public class Image_Threshold_Auto_Controller {
 	}
 	
 	@FXML
-	public void image_preview_threshold_preview() {
-		ImagePlus image_preview_ip = new ImagePlus();
+	public void imageView_threshold_preview() {
+		
+		image_preview_ip = new ImagePlus();
 		image_preview_ip.setImage(image.getImage());
 		
 		method = comboBox_method.getValue().getDisplayMethodName();
@@ -104,7 +105,9 @@ public class Image_Threshold_Auto_Controller {
 	}
 	
 	public void setImage(ImagePlus ip) {
+		
 		image = new ImagePlus();
+		
 		this.image.setImage(ip.getImage());
 	}
 	
@@ -112,15 +115,7 @@ public class Image_Threshold_Auto_Controller {
 		return stage_closed_on_exit_status;
 	}
 	
-	public String getMethod() {
-		return method;
-	}
-	
-	public Boolean getBackground() {
-		return background;
-	}
-	
-	public Integer getLut() {
-		return lut;
+	public ImageProcessor getImageProcessor() {
+		return image_preview_ip.getProcessor();
 	}
 }
