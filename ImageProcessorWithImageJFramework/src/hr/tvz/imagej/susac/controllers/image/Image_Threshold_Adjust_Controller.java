@@ -50,9 +50,9 @@ public class Image_Threshold_Adjust_Controller {
 	
 	private double default_value = new Double(0);
 	
-	public boolean stage_closed_on_exit_status = true;
+	private boolean stage_closed_on_exit_status = true;
 	
-	public ImagePlus image = new ImagePlus();
+	private ImagePlus image = new ImagePlus();
 	private ImagePlus image_preview_ip = new ImagePlus();
 	
 	@FXML

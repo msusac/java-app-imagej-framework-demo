@@ -83,10 +83,7 @@ public class Process_Shadow_Controller {
 		image_preview_ip = new ImagePlus();
 		image_preview_ip.setImage(image.getImage());
 		
-		Image image_preview_fx = SwingFXUtils.toFXImage(image_preview_ip.getProcessor().getBufferedImage(), null);
-		imageView_preview.setImage(image_preview_fx);
-		
-		textView_position.setText("NEUTRAL");
+		set_imageViewPreview_textViewPosition(image_preview_ip, "NEUTRAL");
 	}
 	
 	@FXML
@@ -98,10 +95,7 @@ public class Process_Shadow_Controller {
 		Shadows shadows = new Shadows();
 		shadows.northeast(image_preview_ip.getProcessor());
 		
-		Image image_preview_fx = SwingFXUtils.toFXImage(image_preview_ip.getProcessor().getBufferedImage(), null);
-		imageView_preview.setImage(image_preview_fx);
-		
-		textView_position.setText("NORTH-EAST");
+		set_imageViewPreview_textViewPosition(image_preview_ip, "NORTH-EAST");
 	}
 	
 	@FXML
@@ -113,10 +107,7 @@ public class Process_Shadow_Controller {
 		Shadows shadows = new Shadows();
 		shadows.north(image_preview_ip.getProcessor());
 		
-		Image image_preview_fx = SwingFXUtils.toFXImage(image_preview_ip.getProcessor().getBufferedImage(), null);
-		imageView_preview.setImage(image_preview_fx);
-		
-		textView_position.setText("NORTH");
+		set_imageViewPreview_textViewPosition(image_preview_ip, "NORTH");
 	}
 	
 	@FXML
@@ -128,10 +119,7 @@ public class Process_Shadow_Controller {
 		Shadows shadows = new Shadows();
 		shadows.northwest(image_preview_ip.getProcessor());
 		
-		Image image_preview_fx = SwingFXUtils.toFXImage(image_preview_ip.getProcessor().getBufferedImage(), null);
-		imageView_preview.setImage(image_preview_fx);
-		
-		textView_position.setText("NORTH-WEST");
+		set_imageViewPreview_textViewPosition(image_preview_ip, "NORTH-WEST");
 	}
 	
 	@FXML
@@ -143,10 +131,7 @@ public class Process_Shadow_Controller {
 		Shadows shadows = new Shadows();
 		shadows.west(image_preview_ip.getProcessor());
 		
-		Image image_preview_fx = SwingFXUtils.toFXImage(image_preview_ip.getProcessor().getBufferedImage(), null);
-		imageView_preview.setImage(image_preview_fx);
-		
-		textView_position.setText("WEST");
+		set_imageViewPreview_textViewPosition(image_preview_ip, "WEST");
 	}
 	
 	@FXML
@@ -158,10 +143,7 @@ public class Process_Shadow_Controller {
 		Shadows shadows = new Shadows();
 		shadows.southwest(image_preview_ip.getProcessor());
 		
-		Image image_preview_fx = SwingFXUtils.toFXImage(image_preview_ip.getProcessor().getBufferedImage(), null);
-		imageView_preview.setImage(image_preview_fx);
-		
-		textView_position.setText("SOUTH-WEST");
+		set_imageViewPreview_textViewPosition(image_preview_ip, "SOUTH-WEST");
 	}
 	
 	@FXML
@@ -173,10 +155,7 @@ public class Process_Shadow_Controller {
 		Shadows shadows = new Shadows();
 		shadows.south(image_preview_ip.getProcessor());
 		
-		Image image_preview_fx = SwingFXUtils.toFXImage(image_preview_ip.getProcessor().getBufferedImage(), null);
-		imageView_preview.setImage(image_preview_fx);
-		
-		textView_position.setText("SOUTH");
+		set_imageViewPreview_textViewPosition(image_preview_ip, "SOUTH");
 	}
 	
 	@FXML
@@ -188,10 +167,7 @@ public class Process_Shadow_Controller {
 		Shadows shadows = new Shadows();
 		shadows.southeast(image_preview_ip.getProcessor());
 		
-		Image image_preview_fx = SwingFXUtils.toFXImage(image_preview_ip.getProcessor().getBufferedImage(), null);
-		imageView_preview.setImage(image_preview_fx);
-		
-		textView_position.setText("SOUTH-EAST");
+		set_imageViewPreview_textViewPosition(image_preview_ip, "SOUTH-EAST");
 	}
 	
 	@FXML
@@ -203,12 +179,16 @@ public class Process_Shadow_Controller {
 		Shadows shadows = new Shadows();
 		shadows.east(image_preview_ip.getProcessor());
 		
+		set_imageViewPreview_textViewPosition(image_preview_ip, "EAST");
+	}
+	
+	public void set_imageViewPreview_textViewPosition(ImagePlus image_preview_ip, String position) {
+		
 		Image image_preview_fx = SwingFXUtils.toFXImage(image_preview_ip.getProcessor().getBufferedImage(), null);
 		imageView_preview.setImage(image_preview_fx);
 		
-		textView_position.setText("EAST");
+		textView_position.setText(position);
 	}
-	
 	
 	public void setImage(ImagePlus ip) {
 		

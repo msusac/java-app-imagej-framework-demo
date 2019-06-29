@@ -19,45 +19,14 @@
                   <MenuItem fx:id="file_menuItem_closeImage" disable="true" mnemonicParsing="false" onAction="#file_closeImage" text="Close image" />
                   <MenuItem disable="true" mnemonicParsing="false" text="Close all" />
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem fx:id="file_menuItem_saveImage" disable="true" mnemonicParsing="false" onAction="#file_saveImage" text="Save" />
-                  <Menu fx:id="file_menu_saveAs" disable="true" mnemonicParsing="false" text="Save as...">
-                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#file_saveImageAsBmp" text="BMP" />
-                        <MenuItem mnemonicParsing="false" onAction="#file_saveImageAsFits" text="FITS" />
-                        <MenuItem mnemonicParsing="false" onAction="#file_saveImageAsGif" text="GIF" />
-                        <MenuItem mnemonicParsing="false" onAction="#file_saveImageAsJpeg" text="JPEG" />
-                        <MenuItem mnemonicParsing="false" onAction="#file_saveImageAsLut" text="LUT" />
-                        <MenuItem mnemonicParsing="false" onAction="#file_saveImageAsPgm" text="PGM" />
-                        <MenuItem mnemonicParsing="false" onAction="#file_saveImageAsPng" text="PNG" />
-                        <MenuItem mnemonicParsing="false" onAction="#file_saveImageAsRaw" text="RAW" />
-                        <MenuItem mnemonicParsing="false" onAction="#file_saveImageAsText" text="TEXT" />
-                        <MenuItem mnemonicParsing="false" onAction="#file_saveImageAsTiff" text="TIFF" />
-                        <MenuItem mnemonicParsing="false" onAction="#file_saveImageAsZip" text="ZIP" />
-                     </items>
-                  </Menu>
-                  <MenuItem disable="true" mnemonicParsing="false" text="Save all" />
+                  <MenuItem mnemonicParsing="false" onAction="#file_SaveAs" text="Save" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" text="Quit" />
                </items>
             </Menu>
             <Menu fx:id="image_menu" mnemonicParsing="false" text="Image">
                <items>
-                  <Menu fx:id="image_menu_convert_type" disable="true" mnemonicParsing="false" text="Convert Type...">
-                    <items>
-                      <MenuItem mnemonicParsing="false" onAction="#image_convertToGray8Bit" text="Gray 8-bit" />
-                        <MenuItem mnemonicParsing="false" onAction="#image_convertToGray16Bit" text="Gray 16-bit" />
-                        <MenuItem mnemonicParsing="false" onAction="#image_convertToGray32Bit" text="Gray 32-bit" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" onAction="#image_convertToRGB" text="RGB" />
-                        <MenuItem mnemonicParsing="false" onAction="#image_convertToRGBStack" text="RGB Stack" />
-                        <MenuItem mnemonicParsing="false" onAction="#image_convertToHSB" text="HSB" />
-                        <MenuItem mnemonicParsing="false" onAction="#image_convertToLab" text="Lab" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" onAction="#image_convertRGBStackToLab" text="RGB Stack to Lab" />
-                        <MenuItem mnemonicParsing="false" onAction="#image_convertHSBToRGB" text="HSB Stack to RGB" />
-                        <MenuItem mnemonicParsing="false" onAction="#image_convertLabToRGB" text="Lab to RGB" />
-                    </items>
-                  </Menu>
+                  <MenuItem fx:id="image_menuItem_convert_type" disable="true" mnemonicParsing="false" onAction="#image_ConvertType" text="Convert Type..." />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem fx:id="image_menuItem_brightness_contrast" disable="true" mnemonicParsing="false" onAction="#image_adjustBrightnessContrast" text="Adjust Brightness/Contrast..." />
                   <SeparatorMenuItem mnemonicParsing="false" />
@@ -75,11 +44,6 @@
                <items>
                   <MenuItem fx:id="process_menuItem_filters" disable="true" mnemonicParsing="false" onAction="#process_filter" text="Filters..." />
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem fx:id="process_menuItem_find_edges" disable="true" mnemonicParsing="false" onAction="#process_find_edges" text="Find Edges" />
-                  <MenuItem fx:id="process_menuItem_invert" disable="true" mnemonicParsing="false" onAction="#process_invert" text="Invert" />
-                  <MenuItem fx:id="process_menuItem_sharpen" disable="true" mnemonicParsing="false" onAction="#process_sharpen" text="Sharpen" />
-                  <MenuItem fx:id="process_menuItem_smooth" disable="true" mnemonicParsing="false" onAction="#process_smooth" text="Smooth" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
                   <Menu fx:id="process_menu_noise" disable="true" mnemonicParsing="false" text="Noise">
                     <items>
                       <MenuItem mnemonicParsing="false" onAction="#process_noise_add" text="Add" />
@@ -88,6 +52,15 @@
                   </Menu>
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem fx:id="process_menuItem_shadow" disable="true" mnemonicParsing="false" onAction="#process_shadow" text="Shadow" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <Menu fx:id="process_menu_others" disable="true" mnemonicParsing="false" text="Others">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#process_find_edges" text="Find Edges" />
+                        <MenuItem mnemonicParsing="false" onAction="#process_invert" text="Invert" />
+                        <MenuItem mnemonicParsing="false" onAction="#process_sharpen" text="Sharpen" />
+                        <MenuItem mnemonicParsing="false" onAction="#process_smooth" text="Smooth" />
+                     </items>
+                  </Menu>
                </items></Menu>
          </menus>
       </MenuBar>
