@@ -20,12 +20,9 @@ public class Image_BrightnessContrast_Adjust_Controller {
 	
 	@FXML
 	public Button button_reset;
-	
+
 	@FXML 
 	public Button button_cancel;
-	
-	@FXML
-	public Button button_preview;
 	
 	@FXML
 	public Slider slider_min;

@@ -3,6 +3,7 @@ package hr.tvz.imagej.susac.controllers.image;
 import hr.tvz.imagej.susac.enums.Threshold_Background_Types;
 import hr.tvz.imagej.susac.enums.Threshold_Lut_Types;
 import hr.tvz.imagej.susac.enums.Threshold_Method_Types;
+import ij.IJ;
 import ij.ImagePlus;
 import ij.process.ImageProcessor;
 import javafx.embed.swing.SwingFXUtils;
@@ -67,6 +68,8 @@ public class Image_Threshold_Auto_Controller {
 	public void button_adjust_action_event(ActionEvent event) {
 		
 		stage_closed_on_exit_status = false;
+		
+		IJ.run(image_preview_ip, "Convert to Mask",""); 
 		
 	    Stage stage = (Stage) button_adjust.getScene().getWindow();
 	    stage.close();

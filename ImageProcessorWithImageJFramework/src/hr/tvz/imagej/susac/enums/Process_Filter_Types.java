@@ -1,12 +1,14 @@
 package hr.tvz.imagej.susac.enums;
 
+import ij.plugin.filter.RankFilters;
+
 public enum Process_Filter_Types {
 
-	MEAN("Mean", 0), 
-	MIN("Min", 1), 
-	MAX("Max", 2),
-	VARIANCE("Variance", 3),
-	MEDIAN("Median", 4);
+	MEAN("Mean", RankFilters.MEAN), 
+	MIN("Min", RankFilters.MIN), 
+	MAX("Max", RankFilters.MAX),
+	VARIANCE("Variance", RankFilters.VARIANCE),
+	MEDIAN("Median", RankFilters.MEDIAN);
 	
 	private final String displayFilterName;
 	private final Integer displayFilterValue;

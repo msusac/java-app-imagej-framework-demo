@@ -1,6 +1,7 @@
 package hr.tvz.imagej.susac.controllers.image;
 
 import hr.tvz.imagej.susac.enums.Threshold_Lut_Types;
+import ij.IJ;
 import ij.ImagePlus;
 import ij.process.ImageProcessor;
 import javafx.embed.swing.SwingFXUtils;
@@ -88,6 +89,8 @@ public class Image_Threshold_Adjust_Controller {
 		
 		stage_closed_on_exit_status = false;
 		
+		IJ.run(image_preview_ip, "Convert to Mask",""); 
+		
 	    Stage stage = (Stage) button_adjust.getScene().getWindow();
 	    stage.close();
 	}
@@ -120,7 +123,7 @@ public class Image_Threshold_Adjust_Controller {
 		lut = comboBox_lut.getValue().getDisplayLutValue();
 		
 		image_preview_ip.getProcessor().setThreshold(min_current_value, max_current_value, lut);
-		
+	
 		Image image_preview_fx = SwingFXUtils.toFXImage(image_preview_ip.getBufferedImage(), null);
 		imageView_preview.setImage(image_preview_fx);
 	}
@@ -128,8 +131,8 @@ public class Image_Threshold_Adjust_Controller {
 	public void setImage(ImagePlus ip) {
 		
 		image = new ImagePlus();
+		image.setImage(ip);
 		
-		this.image.setImage(ip.getImage());
 	}
 	
 	public boolean getStageClosedOnExit() {

@@ -2,7 +2,6 @@ package hr.tvz.imagej.susac.controllers.image;
 
 import ij.ImagePlus;
 import ij.process.ImageConverter;
-import ij.process.ImageProcessor;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -90,6 +89,7 @@ public class Image_ConvertType_Controller {
 			ImageConverter imageConverter = new ImageConverter(image_preview_ip);
 			imageConverter.convertToGray8();
 			set_imageViewPreview_textViewStatus(image_preview_ip);
+			textView_status.setText("Gray 8-bit");
 		}
 		catch(IllegalArgumentException e) {
 			image_convertFailedMessage(e.getMessage());
@@ -106,6 +106,7 @@ public class Image_ConvertType_Controller {
 			ImageConverter imageConverter = new ImageConverter(image_preview_ip);
 			imageConverter.convertToGray16();
 			set_imageViewPreview_textViewStatus(image_preview_ip);
+			textView_status.setText("Gray 16-bit");
 		}
 		catch(IllegalArgumentException e) {
 			image_convertFailedMessage(e.getMessage());
@@ -122,6 +123,7 @@ public class Image_ConvertType_Controller {
 			ImageConverter imageConverter = new ImageConverter(image_preview_ip);
 			imageConverter.convertToGray32();
 			set_imageViewPreview_textViewStatus(image_preview_ip);
+			textView_status.setText("Gray 32-bit");
 		}
 		catch(IllegalArgumentException e) {
 			image_convertFailedMessage(e.getMessage());
@@ -137,6 +139,7 @@ public class Image_ConvertType_Controller {
 		ImageConverter imageConverter = new ImageConverter(image_preview_ip);
 		imageConverter.convertToRGB();
 		set_imageViewPreview_textViewStatus(image_preview_ip);
+		textView_status.setText("RGB");
 	}
 		
 	@FXML
@@ -149,6 +152,7 @@ public class Image_ConvertType_Controller {
 			ImageConverter imageConverter = new ImageConverter(image_preview_ip);
 			imageConverter.convertToRGBStack();
 			set_imageViewPreview_textViewStatus(image_preview_ip);
+			textView_status.setText("RGB Stack");
 		}
 		catch(IllegalArgumentException e) {
 			image_convertFailedMessage(e.getMessage());
@@ -165,6 +169,7 @@ public class Image_ConvertType_Controller {
 			ImageConverter imageConverter = new ImageConverter(image_preview_ip);
 			imageConverter.convertToHSB();
 			set_imageViewPreview_textViewStatus(image_preview_ip);
+			textView_status.setText("HSB");
 		}
 		catch(IllegalArgumentException e) {
 			image_convertFailedMessage(e.getMessage());
@@ -181,6 +186,7 @@ public class Image_ConvertType_Controller {
 			ImageConverter imageConverter = new ImageConverter(image_preview_ip);
 			imageConverter.convertToLab();
 			set_imageViewPreview_textViewStatus(image_preview_ip);
+			textView_status.setText("Lab");
 		}
 		catch(IllegalArgumentException e) {
 			image_convertFailedMessage(e.getMessage());
@@ -197,6 +203,7 @@ public class Image_ConvertType_Controller {
 			ImageConverter imageConverter = new ImageConverter(image_preview_ip);
 			imageConverter.convertRGBStackToRGB();
 			set_imageViewPreview_textViewStatus(image_preview_ip);
+			textView_status.setText("RGB Stack To Lab");
 		}
 		catch(IllegalArgumentException e) {
 			image_convertFailedMessage(e.getMessage());
@@ -213,6 +220,7 @@ public class Image_ConvertType_Controller {
 			ImageConverter imageConverter = new ImageConverter(image_preview_ip);
 			imageConverter.convertHSBToRGB();
 			set_imageViewPreview_textViewStatus(image_preview_ip);
+			textView_status.setText("HSB To RGB");
 		}
 		catch(IllegalArgumentException e) {
 			image_convertFailedMessage(e.getMessage());
@@ -228,6 +236,7 @@ public class Image_ConvertType_Controller {
 		try {
 			ImageConverter imageConverter = new ImageConverter(image_preview_ip);
 			imageConverter.convertLabToRGB();
+			textView_status.setText("Lab To RGB");
 		}
 		catch(IllegalArgumentException e) {
 			image_convertFailedMessage(e.getMessage());
@@ -238,8 +247,6 @@ public class Image_ConvertType_Controller {
 		
 		Image image_preview_fx = SwingFXUtils.toFXImage(image_preview_ip.getProcessor().getBufferedImage(), null);
 		imageView_preview.setImage(image_preview_fx);
-		
-		textView_status.setText(String.valueOf(image_preview_ip.getType()));
 	}
 
 	public void image_convertFailedMessage(String message) {

@@ -1,11 +1,13 @@
 package hr.tvz.imagej.susac.enums;
 
+import ij.process.ImageProcessor;
+
 public enum Threshold_Lut_Types {
 
-	RED_LUT("Red Lut", 0), 
-	BLACK_AND_WHITE_LUTI("Black and White Luti", 1), 
-	NO_LUT_UPDATE("No Lut update", 2),
-	OVER_UNDER_LUT("Over under Lut", 3);
+	RED_LUT("Red Lut", ImageProcessor.RED_LUT), 
+	BLACK_AND_WHITE_LUT("Black and White Luti", ImageProcessor.BLACK_AND_WHITE_LUT), 
+	NO_LUT_UPDATE("No Lut update", ImageProcessor.NO_LUT_UPDATE),
+	OVER_UNDER_LUT("Over under Lut", ImageProcessor.OVER_UNDER_LUT);
 	
 	private final String displayLutName;
 	private final Integer displayLutValue;

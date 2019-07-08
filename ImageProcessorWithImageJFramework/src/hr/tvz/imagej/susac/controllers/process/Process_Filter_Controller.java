@@ -21,7 +21,7 @@ public class Process_Filter_Controller {
 	
 	@FXML
 	public Button button_cancel;
-	
+
 	@FXML
 	public ComboBox<Process_Filter_Types> comboBox_filter;
 	
