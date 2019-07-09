@@ -12,6 +12,9 @@
 - Histogram Analysis and Editing
 - Image Stiching 
 
+## Video
+[![](http://img.youtube.com/vi/tybxupYwaK4/0.jpg)](http://www.youtube.com/watch?v=tybxupYwaK4 "Java Image Processor with ImageJ framework Test")
+
 ## Screenshots
 ![zavrsni_1](https://user-images.githubusercontent.com/37413161/60835359-2ef4ca80-a1c3-11e9-8c81-4013cefe890e.png)
 ![zavrsni_2](https://user-images.githubusercontent.com/37413161/60835425-551a6a80-a1c3-11e9-87cb-22c15e0d7122.png)
