@@ -5,14 +5,18 @@ import java.util.ArrayList;
 import hr.tvz.imagej.susac.domains.Particle_Result_Domain;
 import hr.tvz.imagej.susac.enums.Analyze_Particles_Options;
 import ij.ImagePlus;
+import ij.gui.ImageCanvas;
 import ij.measure.ResultsTable;
 import ij.plugin.filter.ParticleAnalyzer;
+import ij.process.ImageProcessor;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -20,6 +24,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 
 public class Analyze_Particles_Controller {
 
@@ -33,7 +38,19 @@ public class Analyze_Particles_Controller {
 	public ComboBox<Analyze_Particles_Options> comboBox_options;
 	
 	@FXML
+	public HBox hbox_image_preview;
+	
+	@FXML
 	public ImageView imageView_preview;
+	
+	@FXML
+	public Label label_roi_x;
+	
+	@FXML
+	public Label label_roi_y;
+	
+	@FXML
+	public Slider slider_zoom;
 	
 	@FXML
 	public Spinner<Double> spinner_pixel_size_min;
@@ -87,6 +104,10 @@ public class Analyze_Particles_Controller {
 	public ToggleButton toogleButton_pixel_size_max_infinite;
 	
 	private ImagePlus image = new ImagePlus();
+	private ImagePlus image_preview = new ImagePlus();
+	
+	private Integer roi_x = 0;
+	private Integer roi_y = 0;
 	
 	@FXML
 	public void initialize() {
@@ -139,9 +160,10 @@ public class Analyze_Particles_Controller {
 		
 		pa.setHideOutputImage(true);
 		pa.analyze(image);
-		
-		
-		Image image_preview_fx = SwingFXUtils.toFXImage(pa.getOutputImage().getBufferedImage(), null);
+	
+		image_preview.setImage(pa.getOutputImage());
+	
+		Image image_preview_fx = SwingFXUtils.toFXImage(image_preview.getBufferedImage(), null);
 		imageView_preview.setImage(image_preview_fx);
 		
 		ArrayList<Particle_Result_Domain> list = new ArrayList<>();
@@ -165,6 +187,14 @@ public class Analyze_Particles_Controller {
 		
 		ObservableList<Particle_Result_Domain> model = FXCollections.observableArrayList(list);
 		tableView.setItems(model);
+		hbox_image_preview.setDisable(false);
+	}
+	
+	@FXML
+	public void reset_image_roi() {
+		
+		slider_zoom.setValue(1);
+		show_image_roi();
 	}
 	
 	@FXML
@@ -191,6 +221,129 @@ public class Analyze_Particles_Controller {
 		pa.setHideOutputImage(true);
 		pa.analyze(image);
 		pa.getOutputImage().show();
+	}
+	
+	@FXML
+	public void show_image_roi_left() {
+		
+		Integer value_zoom = (int) slider_zoom.getValue();
+		Integer width = image_preview.getWidth() / value_zoom;
+		
+		roi_x -= 15;
+		
+		if(roi_x >= 0 && roi_x <= image_preview.getWidth()) {
+			show_image_roi();
+		}
+		else if(roi_x < 0){
+			roi_x = image_preview.getWidth() - width - 15;
+			show_image_roi();
+		}
+	}
+	
+	@FXML
+	public void show_image_roi_right() {
+		
+		Integer value_zoom = (int) slider_zoom.getValue();
+		Integer width = image_preview.getWidth() / value_zoom;
+		
+		roi_x += 15;
+		
+		if(roi_x + width >= 0 && roi_x + width <= image_preview.getWidth()) {
+			show_image_roi();
+		}
+		else if(roi_x + width > image_preview.getWidth()) {
+			roi_x = 0;
+			show_image_roi();
+		}
+	}
+	
+	@FXML
+	public void show_image_roi_up() {
+		
+		Integer value_zoom = (int) slider_zoom.getValue();
+		Integer height = image_preview.getHeight() / value_zoom;
+		
+		roi_y -= 15;
+		
+		if(roi_y >= 0 && roi_y + height <= image_preview.getHeight()) {
+			show_image_roi();
+		}
+		else if(roi_y < 0){
+			roi_y = image_preview.getHeight() - height - 15;;
+			show_image_roi();
+		}
+	}
+	
+	@FXML
+	public void show_image_roi_down() {
+		
+		Integer value_zoom = (int) slider_zoom.getValue();
+		Integer height = image_preview.getHeight() / value_zoom;
+		
+		roi_y += 15;
+		
+		if(roi_y + height >= 0 && roi_y + height <= image_preview.getHeight()) {
+			show_image_roi();
+		}
+		else if(roi_y + height > image_preview.getHeight()) {
+			roi_y = 0;
+			show_image_roi();
+		}
+	}
+	
+	@FXML
+	public void show_image_roi() {
+		
+		ImagePlus image = new ImagePlus();
+		image.setImage(image_preview);
+		
+		ImageProcessor cropped = image.getProcessor(); //image from currently selected roi
+		
+		Integer value_zoom = (int) slider_zoom.getValue();
+		
+		if(value_zoom > 1) {
+			cropped.setRoi(roi_x , roi_y, image.getWidth() / value_zoom, image.getHeight() / value_zoom);
+		}
+		else {
+			roi_x = 0;
+			roi_y = 0;
+			
+			cropped.setRoi(0 , 0, image.getWidth() / value_zoom, image.getHeight() / value_zoom);
+		}
+		
+		label_roi_x.setText(roi_x.toString());
+		label_roi_y.setText(roi_y.toString());
+		
+		image.setProcessor(cropped.crop());
+		
+		Image image_preview_fx = SwingFXUtils.toFXImage(image.getBufferedImage(), null);
+		imageView_preview.setImage(image_preview_fx);
+		
+	}
+	
+	@FXML
+	public void show_imagej_roi() {
+		
+		ImagePlus image = new ImagePlus();
+		image.setImage(image_preview);
+		
+		ImageProcessor cropped = image.getProcessor(); //image from currently selected roi
+		
+		Integer value_zoom = (int) slider_zoom.getValue();
+		
+		if(value_zoom > 1) {
+			cropped.setRoi(roi_x , roi_y, image.getWidth() / value_zoom, image.getHeight() / value_zoom);
+		}
+		else {
+			roi_x = 0;
+			roi_y = 0;
+			
+			cropped.setRoi(0 , 0, image.getWidth() / value_zoom, image.getHeight() / value_zoom);
+		}
+		
+		image.setProcessor(cropped.crop());
+		
+		image.show();
 	}
 	
 	@FXML

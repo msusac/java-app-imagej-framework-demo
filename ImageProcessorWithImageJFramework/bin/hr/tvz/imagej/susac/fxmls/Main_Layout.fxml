@@ -6,7 +6,9 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
@@ -89,12 +91,12 @@
          </items>
       </ToolBar>
    </bottom>
-   <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+   <left>
+      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <ImageView fx:id="iv_1" accessibleText="0" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#iv_array_1_setCurrentImage_OnClick" pickOnBounds="true">
+                  <ImageView fx:id="iv_1" accessibleText="0" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#iv_array_1_setCurrentImage_OnClick" pickOnBounds="true">
                      <HBox.margin>
                         <Insets bottom="5.0" left="5.0" right="10.0" top="5.0" />
                      </HBox.margin>
@@ -102,7 +104,7 @@
                         <Image url="@../../../../../../empty-image.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="iv_2" accessibleText="1" fitHeight="150.0" fitWidth="200.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#iv_array_2_setCurrentImage_OnClick" pickOnBounds="true">
+                  <ImageView fx:id="iv_2" accessibleText="1" fitHeight="75.0" fitWidth="100.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#iv_array_2_setCurrentImage_OnClick" pickOnBounds="true">
                      <HBox.margin>
                         <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                      </HBox.margin>
@@ -110,7 +112,7 @@
                         <Image url="@../../../../../../empty-image.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="iv_3" accessibleText="2" fitHeight="150.0" fitWidth="200.0" layoutX="210.0" layoutY="10.0" onMouseClicked="#iv_array_3_setCurrentImage_OnClick" pickOnBounds="true">
+                  <ImageView fx:id="iv_3" accessibleText="2" fitHeight="75.0" fitWidth="100.0" layoutX="210.0" layoutY="10.0" onMouseClicked="#iv_array_3_setCurrentImage_OnClick" pickOnBounds="true">
                      <image>
                         <Image url="@../../../../../../empty-image.png" />
                      </image>
@@ -120,12 +122,12 @@
                   </ImageView>
                </children>
                <VBox.margin>
-                  <Insets bottom="5.0" left="15.0" right="15.0" top="10.0" />
+                  <Insets bottom="5.0" left="15.0" right="15.0" />
                </VBox.margin>
             </HBox>
             <HBox layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <ImageView fx:id="iv_4" accessibleText="3" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#iv_array_4_setCurrentImage_OnClick" pickOnBounds="true">
+                  <ImageView fx:id="iv_4" accessibleText="3" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#iv_array_4_setCurrentImage_OnClick" pickOnBounds="true">
                      <image>
                         <Image url="@../../../../../../empty-image.png" />
                      </image>
@@ -133,7 +135,7 @@
                         <Insets bottom="5.0" left="5.0" right="10.0" top="5.0" />
                      </HBox.margin>
                   </ImageView>
-                  <ImageView fx:id="iv_5" accessibleText="4" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#iv_array_5_setCurrentImage_OnClick" pickOnBounds="true">
+                  <ImageView fx:id="iv_5" accessibleText="4" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#iv_array_5_setCurrentImage_OnClick" pickOnBounds="true">
                      <image>
                         <Image url="@../../../../../../empty-image.png" />
                      </image>
@@ -141,7 +143,7 @@
                         <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                      </HBox.margin>
                   </ImageView>
-                  <ImageView fx:id="iv_6" accessibleText="5" fitHeight="150.0" fitWidth="200.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#iv_array_6_setCurrentImage_OnClick" pickOnBounds="true">
+                  <ImageView fx:id="iv_6" accessibleText="5" fitHeight="75.0" fitWidth="100.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#iv_array_6_setCurrentImage_OnClick" pickOnBounds="true">
                      <image>
                         <Image url="@../../../../../../empty-image.png" />
                      </image>
@@ -151,12 +153,12 @@
                   </ImageView>
                </children>
                <VBox.margin>
-                  <Insets bottom="5.0" left="15.0" right="15.0" top="5.0" />
+                  <Insets bottom="5.0" left="15.0" right="15.0" />
                </VBox.margin>
             </HBox>
             <HBox layoutX="25.0" layoutY="185.0" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <ImageView fx:id="iv_7" accessibleText="6" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#iv_array_7_setCurrentImage_OnClick" pickOnBounds="true">
+                  <ImageView fx:id="iv_7" accessibleText="6" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#iv_array_7_setCurrentImage_OnClick" pickOnBounds="true">
                      <image>
                         <Image url="@../../../../../../empty-image.png" />
                      </image>
@@ -164,7 +166,7 @@
                         <Insets bottom="5.0" left="5.0" right="10.0" top="5.0" />
                      </HBox.margin>
                   </ImageView>
-                  <ImageView fx:id="iv_8" accessibleText="7" fitHeight="150.0" fitWidth="200.0" onMouseClicked="#iv_array_8_setCurrentImage_OnClick" pickOnBounds="true">
+                  <ImageView fx:id="iv_8" accessibleText="7" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#iv_array_8_setCurrentImage_OnClick" pickOnBounds="true">
                      <image>
                         <Image url="@../../../../../../empty-image.png" />
                      </image>
@@ -172,7 +174,7 @@
                         <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                      </HBox.margin>
                   </ImageView>
-                  <ImageView fx:id="iv_9" accessibleText="8" fitHeight="150.0" fitWidth="200.0" layoutX="224.0" layoutY="15.0" onMouseClicked="#iv_array_9_setCurrentImage_OnClick" pickOnBounds="true">
+                  <ImageView fx:id="iv_9" accessibleText="8" fitHeight="75.0" fitWidth="100.0" layoutX="224.0" layoutY="15.0" onMouseClicked="#iv_array_9_setCurrentImage_OnClick" pickOnBounds="true">
                      <image>
                         <Image url="@../../../../../../empty-image.png" />
                      </image>
@@ -182,13 +184,22 @@
                   </ImageView>
                </children>
                <VBox.margin>
-                  <Insets bottom="10.0" left="15.0" right="15.0" top="5.0" />
+                  <Insets bottom="10.0" left="15.0" right="15.0" />
                </VBox.margin>
             </HBox>
+            <Separator prefWidth="200.0">
+               <VBox.margin>
+                  <Insets bottom="15.0" left="15.0" right="15.0" />
+               </VBox.margin>
+            </Separator>
+            <ImageView fx:id="iv_current_histogram" fitHeight="225.0" fitWidth="275.0" pickOnBounds="true" preserveRatio="true" />
          </children>
+         <BorderPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </BorderPane.margin>
       </VBox>
-   </center>
-   <right>
+   </left>
+   <center>
       <VBox fx:id="vbox_current_image" alignment="TOP_CENTER" disable="true" prefHeight="200.0" prefWidth="100.0" visible="false" BorderPane.alignment="CENTER">
          <children>
             <Label text="CURRENT IMAGE">
@@ -198,23 +209,9 @@
                <font>
                   <Font name="Impact" size="24.0" />
                </font></Label>
-            <Label fx:id="label_current_image" alignment="CENTER" prefHeight="40.0" prefWidth="250.0" textAlignment="CENTER" wrapText="true">
-               <VBox.margin>
-                  <Insets top="5.0" />
-               </VBox.margin>
-            </Label>
-            <Label fx:id="label_current_image_status" alignment="CENTER" layoutX="96.0" layoutY="54.0" prefHeight="18.0" prefWidth="290.0" textAlignment="CENTER" wrapText="true" />
-            <ImageView fx:id="iv_current_image" fitHeight="325.0" fitWidth="400.0" pickOnBounds="true">
-               <image>
-                  <Image url="@../../../../../../empty-image.png" />
-               </image>
-               <VBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </VBox.margin>
-            </ImageView>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button layoutX="267.0" layoutY="37.0" mnemonicParsing="false" onAction="#show_image">
+                  <Button mnemonicParsing="false" onAction="#show_image">
                      <graphic>
                         <ImageView disable="true" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -222,12 +219,12 @@
                            </image>
                         </ImageView>
                      </graphic>
-                     <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </HBox.margin>
                      <tooltip>
                         <Tooltip text="Show Image" />
                      </tooltip>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
                   </Button>
                   <Button mnemonicParsing="false" onAction="#image_adjustBrightnessContrast">
                      <graphic>
@@ -237,14 +234,14 @@
                            </image>
                         </ImageView>
                      </graphic>
-                     <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </HBox.margin>
                      <tooltip>
                         <Tooltip text="Brightness and Contrast" />
                      </tooltip>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
                   </Button>
-                  <Button layoutX="97.0" layoutY="37.0" mnemonicParsing="false" onAction="#image_ConvertType">
+                  <Button mnemonicParsing="false" onAction="#image_ConvertType">
                      <graphic>
                         <ImageView disable="true" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -252,14 +249,14 @@
                            </image>
                         </ImageView>
                      </graphic>
-                     <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </HBox.margin>
                      <tooltip>
                         <Tooltip text="Convert Type" />
                      </tooltip>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
                   </Button>
-                  <Button layoutX="200.0" layoutY="37.0" mnemonicParsing="false" onAction="#image_threshold_auto_instant">
+                  <Button mnemonicParsing="false" onAction="#image_threshold_auto_instant">
                      <graphic>
                         <ImageView disable="true" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true">
                            <image>
@@ -267,14 +264,14 @@
                            </image>
                         </ImageView>
                      </graphic>
-                     <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </HBox.margin>
                      <tooltip>
                         <Tooltip text="Threshold" />
                      </tooltip>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
                   </Button>
-                  <Button layoutX="225.0" layoutY="37.0" mnemonicParsing="false" onAction="#process_filter">
+                  <Button mnemonicParsing="false" onAction="#process_filter">
                      <graphic>
                         <ImageView disable="true" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true">
                            <image>
@@ -282,14 +279,14 @@
                            </image>
                         </ImageView>
                      </graphic>
-                     <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </HBox.margin>
                      <tooltip>
                         <Tooltip text="Filters" />
                      </tooltip>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
                   </Button>
-                  <Button layoutX="246.0" layoutY="37.0" mnemonicParsing="false" onAction="#analyze_particles">
+                  <Button mnemonicParsing="false" onAction="#analyze_particles">
                      <graphic>
                         <ImageView disable="true" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -297,14 +294,14 @@
                            </image>
                         </ImageView>
                      </graphic>
-                     <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </HBox.margin>
                      <tooltip>
                         <Tooltip text="Analyze Particles" />
                      </tooltip>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
                   </Button>
-                  <Button layoutX="323.0" layoutY="37.0" mnemonicParsing="false" onAction="#file_save">
+                  <Button mnemonicParsing="false" onAction="#file_save">
                      <graphic>
                         <ImageView disable="true" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -312,14 +309,14 @@
                            </image>
                         </ImageView>
                      </graphic>
-                     <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </HBox.margin>
                      <tooltip>
                         <Tooltip text="Save Image" />
                      </tooltip>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
                   </Button>
-                  <Button layoutX="353.0" layoutY="37.0" mnemonicParsing="false" onAction="#file_closeImage">
+                  <Button mnemonicParsing="false" onAction="#file_closeImage">
                      <graphic>
                         <ImageView disable="true" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -327,12 +324,166 @@
                            </image>
                         </ImageView>
                      </graphic>
-                     <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </HBox.margin>
                      <tooltip>
                         <Tooltip text="Close Image" />
                      </tooltip>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+            <ImageView fx:id="iv_current_image" fitHeight="425.0" fitWidth="575.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../../../../../../empty-image.png" />
+               </image>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </ImageView>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="35.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../icons/math-mathematical-expression-coordinates-x-y-512.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <Label fx:id="label_roi_x" text="0">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label text=";">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="label_roi_y" text="0">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#show_image_roi_left">
+                     <graphic>
+                        <ImageView disable="true" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true">
+                           <image>
+                              <Image url="@../../../../../../icons/iconfinder_arrow-left-01_186410.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Left" />
+                     </tooltip>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button layoutX="300.0" layoutY="11.0" mnemonicParsing="false" onAction="#show_image_roi_right">
+                     <graphic>
+                        <ImageView disable="true" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true">
+                           <image>
+                              <Image url="@../../../../../../icons/iconfinder_arrow-right-01_186409.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Right" />
+                     </tooltip>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button layoutX="279.0" layoutY="11.0" mnemonicParsing="false" onAction="#show_image_roi_up">
+                     <graphic>
+                        <ImageView disable="true" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true">
+                           <image>
+                              <Image url="@../../../../../../icons/iconfinder_arrow-up-01_186407%20(1).png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Up" />
+                     </tooltip>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button layoutX="341.0" layoutY="11.0" mnemonicParsing="false" onAction="#show_image_roi_down">
+                     <graphic>
+                        <ImageView disable="true" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true">
+                           <image>
+                              <Image url="@../../../../../../icons/iconfinder_arrow-down-01_186411%20(1).png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Down" />
+                     </tooltip>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <ImageView fitHeight="35.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="15.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                     <image>
+                        <Image url="@../../../../../../icons/SoftwareIcons-44-512.png" />
+                     </image>
+                  </ImageView>
+                  <Slider fx:id="slider_zoom" blockIncrement="1.0" majorTickUnit="1.0" max="6.0" min="1.0" minorTickCount="0" onMouseDragged="#show_image_roi" onMouseReleased="#show_image_roi" prefHeight="38.0" prefWidth="150.0" showTickLabels="true" showTickMarks="true" value="1.0">
+                     <HBox.margin>
+                        <Insets bottom="5.0" right="10.0" top="15.0" />
+                     </HBox.margin>
+                     <tooltip>
+                        <Tooltip text="Zoom" />
+                     </tooltip>
+                  </Slider>
+                  <Button mnemonicParsing="false" onAction="#show_imagej_roi">
+                     <graphic>
+                        <ImageView disable="true" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../../icons/show.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Show Image" />
+                     </tooltip>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#reset_image_roi">
+                     <graphic>
+                        <ImageView disable="true" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../../icons/reset-512.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Reset Image" />
+                     </tooltip>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
                   </Button>
                </children>
             </HBox>
@@ -341,5 +492,5 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </BorderPane.margin>
       </VBox>
-   </right>
+   </center>
 </BorderPane>

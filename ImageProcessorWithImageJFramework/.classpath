@@ -6,6 +6,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/msusac/Desktop/ImageJ/ij.jar" sourcepath="source"/>
+	<classpathentry kind="lib" path="C:/Users/msusac/Desktop/ImageJ/ij.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

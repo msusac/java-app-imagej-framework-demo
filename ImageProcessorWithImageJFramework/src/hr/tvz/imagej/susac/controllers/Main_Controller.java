@@ -14,6 +14,7 @@ import hr.tvz.imagej.susac.controllers.process.Process_Filter_Controller;
 import hr.tvz.imagej.susac.controllers.process.Process_Shadow_Controller;
 import ij.IJ;
 import ij.ImagePlus;
+import ij.gui.HistogramWindow;
 import ij.plugin.filter.RankFilters;
 import ij.process.ImageProcessor;
 import ij.process.ImageStatistics;
@@ -29,6 +30,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Slider;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -45,6 +47,12 @@ public class Main_Controller {
 	
 	@FXML
 	public Label label_current_image_status;
+	
+	@FXML
+	public Label label_roi_x;
+	
+	@FXML
+	public Label label_roi_y;
 	
 	@FXML
 	public MenuItem analyze_particles;
@@ -119,6 +127,12 @@ public class Main_Controller {
 	public ImageView iv_current_image;
 	
 	@FXML
+	public ImageView iv_current_histogram;
+	
+	@FXML
+	public Slider slider_zoom;
+	
+	@FXML
 	public Text textMessage;
 	
 	@FXML
@@ -128,6 +142,9 @@ public class Main_Controller {
 	private ArrayList<ImagePlus> ip_array = new ArrayList<ImagePlus>();
 	
 	private Image default_image;
+	
+	private Integer roi_x = 0;
+	private Integer roi_y = 0;
 	
 	private static ImagePlus current_image;
 	
@@ -432,47 +449,6 @@ public class Main_Controller {
 			Platform.exit();	
 		}
 		});
-	}
-	
-	private void onImageOpened() {
-		
-		analyze_particles.setDisable(false);
-		file_menuItem_closeImage.setDisable(false);
-		file_menuItem_closeAllImage.setDisable(false);
-		file_menuItem_saveImage.setDisable(false);
-		file_menuItem_saveAllImage.setDisable(false);
-		file_menuItem_saveAsImage.setDisable(false);
-		image_menuItem_brightness_contrast.setDisable(false);
-		image_menuItem_convert_type.setDisable(false);
-		image_menu_threshold.setDisable(false);
-		process_menuItem_filters.setDisable(false);
-	    process_menuItem_shadow.setDisable(false);
-		process_menu_noise.setDisable(false);
-		process_menu_others.setDisable(false);
-		
-		vbox_current_image.setDisable(false);
-		vbox_current_image.setVisible(true);
-	}
-	
-	public void onImageClosed() {
-		
-		analyze_particles.setDisable(true);
-		file_menuItem_closeImage.setDisable(true);
-		file_menuItem_saveImage.setDisable(true);
-		file_menuItem_saveAsImage.setDisable(true);
-		image_menuItem_brightness_contrast.setDisable(true);
-		image_menuItem_convert_type.setDisable(true);
-		image_menu_threshold.setDisable(true);
-		process_menuItem_filters.setDisable(true);
-	    process_menuItem_shadow.setDisable(true);
-		process_menu_noise.setDisable(true);
-		process_menu_others.setDisable(true);
-		
-		vbox_current_image.setDisable(true);
-		vbox_current_image.setVisible(false);
-		
-		file_menuItem_closeAllImage.setDisable(true);
-		file_menuItem_saveAllImage.setDisable(true);
 	}
 	
 	@FXML
@@ -790,8 +766,144 @@ public class Main_Controller {
 	}
 	
 	@FXML
+	public void reset_image_roi() {
+		
+		slider_zoom.setValue(1);
+		show_image_roi();
+	}
+	
+	@FXML
 	public void show_image() {
 		current_image.show();
+	}
+	
+	@FXML
+	public void show_image_roi_left() {
+		
+		Integer value_zoom = (int) slider_zoom.getValue();
+		Integer width = current_image.getWidth() / value_zoom;
+		
+		roi_x -= 15;
+		
+		if(roi_x >= 0 && roi_x <= current_image.getWidth()) {
+			show_image_roi();
+		}
+		else if(roi_x < 0){
+			roi_x = current_image.getWidth() - width - 15;
+			show_image_roi();
+		}
+	}
+	
+	@FXML
+	public void show_image_roi_right() {
+		
+		Integer value_zoom = (int) slider_zoom.getValue();
+		Integer width = current_image.getWidth() / value_zoom;
+		
+		roi_x += 15;
+		
+		if(roi_x + width >= 0 && roi_x + width <= current_image.getWidth()) {
+			show_image_roi();
+		}
+		else if(roi_x + width > current_image.getWidth()) {
+			roi_x = 0;
+			show_image_roi();
+		}
+	}
+	
+	@FXML
+	public void show_image_roi_up() {
+		
+		Integer value_zoom = (int) slider_zoom.getValue();
+		Integer height = current_image.getHeight() / value_zoom;
+		
+		roi_y -= 15;
+		
+		if(roi_y >= 0 && roi_y + height <= current_image.getHeight()) {
+			show_image_roi();
+		}
+		else if(roi_y < 0){
+			roi_y = current_image.getHeight() - height - 15;
+			show_image_roi();
+		}
+	}
+	
+	@FXML
+	public void show_image_roi_down() {
+		
+		Integer value_zoom = (int) slider_zoom.getValue();
+		Integer height = current_image.getHeight() / value_zoom;
+		
+		roi_y += 15;
+		
+		if(roi_y + height >= 0 && roi_y + height <= current_image.getHeight()) {
+			show_image_roi();
+		}
+		else if(roi_y + height > current_image.getHeight()) {
+			roi_y = 0;
+			show_image_roi();
+		}
+	}
+	
+	@FXML
+	public void show_image_roi() {
+		
+		/*
+		 * ImagePlus image = new ImagePlus();
+			ImageStack stack = current_image.getStack();
+			ImageProcessor processor = stack.getProcessor(3);
+			image.setProcessor(processor);
+		 */
+		ImagePlus image = new ImagePlus();
+		image.setImage(current_image);
+		
+		ImageProcessor cropped = image.getProcessor(); //image from currently selected roi
+		
+		Integer value_zoom = (int) slider_zoom.getValue();
+		
+		if(value_zoom > 1) {
+			cropped.setRoi(roi_x , roi_y, image.getWidth() / value_zoom, image.getHeight() / value_zoom);
+		}
+		else {
+			roi_x = 0;
+			roi_y = 0;
+			
+			cropped.setRoi(0 , 0, image.getWidth() / value_zoom, image.getHeight() / value_zoom);
+		}
+		
+		label_roi_x.setText(roi_x.toString());
+		label_roi_y.setText(roi_y.toString());
+		
+		image.setProcessor(cropped.crop());
+		
+		Image image_preview_fx = SwingFXUtils.toFXImage(image.getBufferedImage(), null);
+		iv_current_image.setImage(image_preview_fx);
+		
+	}
+	
+	@FXML
+	public void show_imagej_roi() {
+		
+		ImagePlus image = new ImagePlus();
+		image.setImage(current_image);
+		
+		ImageProcessor cropped = image.getProcessor(); //image from currently selected roi
+		
+		Integer value_zoom = (int) slider_zoom.getValue();
+		
+		if(value_zoom > 1) {
+			cropped.setRoi(roi_x , roi_y, image.getWidth() / value_zoom, image.getHeight() / value_zoom);
+		}
+		else {
+			roi_x = 0;
+			roi_y = 0;
+			
+			cropped.setRoi(0 , 0, image.getWidth() / value_zoom, image.getHeight() / value_zoom);
+		}
+		
+		image.setProcessor(cropped.crop());
+		
+		image.show();
 	}
 	
 	/*Messages*/
@@ -849,13 +961,58 @@ public class Main_Controller {
 		setCurrentImage(Integer.parseInt(iv_9.getAccessibleText()));
 	}
 	
+	private void onImageOpened() {
+		
+		analyze_particles.setDisable(false);
+		file_menuItem_closeImage.setDisable(false);
+		file_menuItem_closeAllImage.setDisable(false);
+		file_menuItem_saveImage.setDisable(false);
+		file_menuItem_saveAllImage.setDisable(false);
+		file_menuItem_saveAsImage.setDisable(false);
+		image_menuItem_brightness_contrast.setDisable(false);
+		image_menuItem_convert_type.setDisable(false);
+		image_menu_threshold.setDisable(false);
+		process_menuItem_filters.setDisable(false);
+	    process_menuItem_shadow.setDisable(false);
+		process_menu_noise.setDisable(false);
+		process_menu_others.setDisable(false);
+		
+		vbox_current_image.setDisable(false);
+		vbox_current_image.setVisible(true);
+			
+		iv_current_histogram.setVisible(true);
+	}
+	
+	public void onImageClosed() {
+		
+		analyze_particles.setDisable(true);
+		file_menuItem_closeImage.setDisable(true);
+		file_menuItem_saveImage.setDisable(true);
+		file_menuItem_saveAsImage.setDisable(true);
+		image_menuItem_brightness_contrast.setDisable(true);
+		image_menuItem_convert_type.setDisable(true);
+		image_menu_threshold.setDisable(true);
+		process_menuItem_filters.setDisable(true);
+	    process_menuItem_shadow.setDisable(true);
+		process_menu_noise.setDisable(true);
+		process_menu_others.setDisable(true);
+		
+		vbox_current_image.setDisable(true);
+		vbox_current_image.setVisible(false);
+		
+		file_menuItem_closeAllImage.setDisable(true);
+		file_menuItem_saveAllImage.setDisable(true);
+		
+		iv_current_histogram.setVisible(false);
+	}
+	
 	private void setCurrentImage(Integer id) {
 		
 		if(id < ip_array.size()) {
 			current_image = new ImagePlus();
 			current_image = ip_array.get(id);
 			
-			label_current_image.setText((ip_array.get(id).getTitle()));
+			//label_current_image.setText((ip_array.get(id).getTitle()));
 			
 			String resolution = String.valueOf(ip_array.get(id).getWidth()) + "x" + String.valueOf(ip_array.get(id).getHeight());
 			
@@ -879,11 +1036,18 @@ public class Main_Controller {
 				type = "RGB";
 			}
 			
-			label_current_image_status.setText(resolution + "; " + type);
+			//label_current_image_status.setText(resolution + "; " + type);
 			
 			Image image_preview_fx = SwingFXUtils.toFXImage(ip_array.get(id).getBufferedImage(), null);
 			iv_current_image.setImage(image_preview_fx);
 			iv_current_image.setAccessibleText(String.valueOf(id));
+			
+			HistogramWindow histogram = new HistogramWindow(current_image);
+			Image image_preview_histogram = SwingFXUtils.toFXImage(histogram.getImagePlus().getBufferedImage(), null);
+			iv_current_histogram.setImage(image_preview_histogram);
+			
+			slider_zoom.setValue(1);
+			show_image_roi();
 			
 			onImageOpened();
 		}
@@ -898,9 +1062,16 @@ public class Main_Controller {
 		
 		Image image_preview_fx1 = SwingFXUtils.toFXImage(current_image.getBufferedImage(), null);
 		iv_current_image.setImage(image_preview_fx1);
-	
+		
 		Image image_preview_fx2 = SwingFXUtils.toFXImage(ip_array.get(id).getBufferedImage(), null);
 		iv_array.get(id).setImage(image_preview_fx2);
+		
+		HistogramWindow histogram = new HistogramWindow(current_image);
+		Image image_preview_histogram = SwingFXUtils.toFXImage(histogram.getImagePlus().getBufferedImage(), null);
+		iv_current_histogram.setImage(image_preview_histogram);
+		
+		slider_zoom.setValue(1);
+		show_image_roi();
 	}
 	
 	private void setImagePlus(ImagePlus ip) {
@@ -915,5 +1086,12 @@ public class Main_Controller {
 	
 		Image image_preview_fx2 = SwingFXUtils.toFXImage(ip_array.get(id).getBufferedImage(), null);
 		iv_array.get(id).setImage(image_preview_fx2);
+		
+		HistogramWindow histogram = new HistogramWindow(current_image);
+		Image image_preview_histogram = SwingFXUtils.toFXImage(histogram.getImagePlus().getBufferedImage(), null);
+		iv_current_histogram.setImage(image_preview_histogram);
+		
+		slider_zoom.setValue(1);
+		show_image_roi();
 	}
 }
