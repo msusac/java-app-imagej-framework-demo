@@ -57,7 +57,7 @@ public class Process_Shadow_Controller {
 	public void button_adjust_action_event(ActionEvent event) {
 		
 		image_return = new ImagePlus();
-		image_return.setImage(image_preview_ip.getImage());
+		image_return = image_preview_ip.duplicate();
 		
 		stage_closed_on_exit_status = false;
 		
@@ -69,7 +69,7 @@ public class Process_Shadow_Controller {
 	public void button_cancel_action_event(ActionEvent event) {
 		
 		image_return = new ImagePlus();
-		image_return.setImage(image.getImage());
+		image_return = image.duplicate();
 		
 		stage_closed_on_exit_status = false;
 		
@@ -81,7 +81,7 @@ public class Process_Shadow_Controller {
 	public void imageView_preview_onClick() {
 		
 		image_preview_ip = new ImagePlus();
-		image_preview_ip.setImage(image.getImage());
+		image_preview_ip = image.duplicate();
 		
 		set_imageViewPreview_textViewPosition(image_preview_ip, "NEUTRAL");
 	}
@@ -90,7 +90,7 @@ public class Process_Shadow_Controller {
 	public void button_north_east_onClick() {
 		
 		image_preview_ip = new ImagePlus();
-		image_preview_ip.setImage(image.getImage());
+		image_preview_ip = image.duplicate();
 		
 		Shadows shadows = new Shadows();
 		shadows.northeast(image_preview_ip.getProcessor());
@@ -102,7 +102,7 @@ public class Process_Shadow_Controller {
 	public void button_north_onClick() {
 		
 		image_preview_ip = new ImagePlus();
-		image_preview_ip.setImage(image.getImage());
+		image_preview_ip = image.duplicate();
 		
 		Shadows shadows = new Shadows();
 		shadows.north(image_preview_ip.getProcessor());
@@ -114,7 +114,7 @@ public class Process_Shadow_Controller {
 	public void button_north_west_onClick() {
 		
 		image_preview_ip = new ImagePlus();
-		image_preview_ip.setImage(image.getImage());
+		image_preview_ip = image.duplicate();
 		
 		Shadows shadows = new Shadows();
 		shadows.northwest(image_preview_ip.getProcessor());
@@ -126,7 +126,7 @@ public class Process_Shadow_Controller {
 	public void button_west_onClick() {
 		
 		image_preview_ip = new ImagePlus();
-		image_preview_ip.setImage(image.getImage());
+		image_preview_ip = image.duplicate();
 		
 		Shadows shadows = new Shadows();
 		shadows.west(image_preview_ip.getProcessor());
@@ -138,7 +138,7 @@ public class Process_Shadow_Controller {
 	public void button_south_west_onClick() {
 		
 		image_preview_ip = new ImagePlus();
-		image_preview_ip.setImage(image.getImage());
+		image_preview_ip = image.duplicate();
 		
 		Shadows shadows = new Shadows();
 		shadows.southwest(image_preview_ip.getProcessor());
@@ -150,7 +150,7 @@ public class Process_Shadow_Controller {
 	public void button_south_onClick() {
 		
 		image_preview_ip = new ImagePlus();
-		image_preview_ip.setImage(image.getImage());
+		image_preview_ip = image.duplicate();
 		
 		Shadows shadows = new Shadows();
 		shadows.south(image_preview_ip.getProcessor());
@@ -162,7 +162,7 @@ public class Process_Shadow_Controller {
 	public void button_south_east_onClick() {
 		
 		image_preview_ip = new ImagePlus();
-		image_preview_ip.setImage(image.getImage());
+		image_preview_ip = image.duplicate();
 		
 		Shadows shadows = new Shadows();
 		shadows.southeast(image_preview_ip.getProcessor());
@@ -174,7 +174,7 @@ public class Process_Shadow_Controller {
 	public void button_east_onClick() {
 		
 		image_preview_ip = new ImagePlus();
-		image_preview_ip.setImage(image.getImage());
+		image_preview_ip = image.duplicate();
 		
 		Shadows shadows = new Shadows();
 		shadows.east(image_preview_ip.getProcessor());
@@ -194,7 +194,7 @@ public class Process_Shadow_Controller {
 		
 		image = new ImagePlus();
 		
-		this.image.setImage(ip.getImage());
+		this.image = ip.duplicate();
 	}
 	
 	public Boolean getStageClosedOnExit() {

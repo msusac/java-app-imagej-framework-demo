@@ -50,7 +50,7 @@ public class Process_Add_Noise_Controller {
 	public void imageView_add_noise_preview() {
 		
 		image_preview_ip = new ImagePlus();
-		image_preview_ip.setImage(image.getImage());
+		image_preview_ip = image.duplicate();
 		
 		image_preview_ip.getProcessor().noise(spinner.getValue());
 
@@ -62,7 +62,7 @@ public class Process_Add_Noise_Controller {
 		
 		image = new ImagePlus();
 		
-		this.image.setImage(ip.getImage());
+		this.image = ip.duplicate();
 	}
 	
 	public Boolean getStageClosedOnExit() {

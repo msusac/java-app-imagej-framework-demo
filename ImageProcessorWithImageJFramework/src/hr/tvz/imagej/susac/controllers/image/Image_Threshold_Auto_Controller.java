@@ -89,7 +89,7 @@ public class Image_Threshold_Auto_Controller {
 	public void imageView_threshold_preview() {
 		
 		image_preview_ip = new ImagePlus();
-		image_preview_ip.setImage(image.getImage());
+		image_preview_ip = image.duplicate();
 		
 		method = comboBox_method.getValue().getDisplayMethodName();
 		background = comboBox_background.getValue().getDisplayBackgroundName();
@@ -111,7 +111,7 @@ public class Image_Threshold_Auto_Controller {
 		
 		image = new ImagePlus();
 		
-		this.image.setImage(ip.getImage());
+		this.image = ip.duplicate();
 	}
 	
 	public Boolean getStageClosedOnExit() {

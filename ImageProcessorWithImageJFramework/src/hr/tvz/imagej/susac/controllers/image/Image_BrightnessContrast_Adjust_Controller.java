@@ -104,8 +104,7 @@ public class Image_BrightnessContrast_Adjust_Controller {
 	public void imageView_preview_drag_over() throws NullPointerException {
 		
 		image_preview_ip = new ImagePlus();
-		image_preview_ip.setImage(image.getImage());
-		
+		image_preview_ip = image.duplicate();
 		
 		image_preview_ip.getProcessor().setMinAndMax(min_current_value, max_current_value);
 		
@@ -125,7 +124,8 @@ public class Image_BrightnessContrast_Adjust_Controller {
 		this.slider_max.setValue(max_value);
 		this.min_default_value = min_value;
 		this.max_default_value = max_value;
-		this.image.setImage(ip.getImage());
+		this.image = ip.duplicate();
+		
 	}
 	
 	public boolean getStageClosedOnExit() {
@@ -135,4 +135,5 @@ public class Image_BrightnessContrast_Adjust_Controller {
 	public ImageProcessor getImageProcessor() {
 		return image_preview_ip.getProcessor();
 	}
+	
 }

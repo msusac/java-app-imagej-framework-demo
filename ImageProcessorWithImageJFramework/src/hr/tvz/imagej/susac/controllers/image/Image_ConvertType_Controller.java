@@ -35,24 +35,6 @@ public class Image_ConvertType_Controller {
 	public Button button_rgb;
 	
 	@FXML
-	public Button button_rgb_stack;
-	
-	@FXML
-	public Button button_hsb;
-	
-	@FXML
-	public Button button_lab;
-	
-	@FXML
-	public Button button_rgb_stack_to_lab;
-	
-	@FXML
-	public Button button_hsb_to_rgb;
-	
-	@FXML
-	public Button button_lab_to_rgb;
-	
-	@FXML
 	public ImageView imageView_preview;
 	
 	@FXML
@@ -83,7 +65,7 @@ public class Image_ConvertType_Controller {
 	public void image_convertToGray8Bit() {
 		
 		image_preview_ip = new ImagePlus();
-		image_preview_ip.setImage(image);
+		image_preview_ip = image.duplicate();
 		
 		try {
 			ImageConverter imageConverter = new ImageConverter(image_preview_ip);
@@ -100,7 +82,7 @@ public class Image_ConvertType_Controller {
 	public void image_convertToGray16Bit() {
 		
 		image_preview_ip = new ImagePlus();
-		image_preview_ip.setImage(image);
+		image_preview_ip = image.duplicate();
 		
 		try {
 			ImageConverter imageConverter = new ImageConverter(image_preview_ip);
@@ -117,7 +99,7 @@ public class Image_ConvertType_Controller {
 	public void image_convertToGray32Bit() {
 		
 		image_preview_ip = new ImagePlus();
-		image_preview_ip.setImage(image);
+		image_preview_ip = image.duplicate();
 		
 		try {
 			ImageConverter imageConverter = new ImageConverter(image_preview_ip);
@@ -134,7 +116,7 @@ public class Image_ConvertType_Controller {
 	public void image_convertToRGB() {
 		
 		image_preview_ip = new ImagePlus();
-		image_preview_ip.setImage(image);
+		image_preview_ip = image.duplicate();
 		
 		ImageConverter imageConverter = new ImageConverter(image_preview_ip);
 		imageConverter.convertToRGB();
@@ -142,107 +124,6 @@ public class Image_ConvertType_Controller {
 		textView_status.setText("RGB");
 	}
 		
-	@FXML
-	public void image_convertToRGBStack() {
-		
-		image_preview_ip = new ImagePlus();
-		image_preview_ip.setImage(image);
-		
-		try {
-			ImageConverter imageConverter = new ImageConverter(image_preview_ip);
-			imageConverter.convertToRGBStack();
-			set_imageViewPreview_textViewStatus(image_preview_ip);
-			textView_status.setText("RGB Stack");
-		}
-		catch(IllegalArgumentException e) {
-			image_convertFailedMessage(e.getMessage());
-		}
-	}
-		
-	@FXML
-	public void image_convertToHSB() {
-		
-		image_preview_ip = new ImagePlus();
-		image_preview_ip.setImage(image);
-		
-		try {
-			ImageConverter imageConverter = new ImageConverter(image_preview_ip);
-			imageConverter.convertToHSB();
-			set_imageViewPreview_textViewStatus(image_preview_ip);
-			textView_status.setText("HSB");
-		}
-		catch(IllegalArgumentException e) {
-			image_convertFailedMessage(e.getMessage());
-		}
-	}
-		
-	@FXML
-	public void image_convertToLab() {
-		
-		image_preview_ip = new ImagePlus();
-		image_preview_ip.setImage(image);
-		
-		try {
-			ImageConverter imageConverter = new ImageConverter(image_preview_ip);
-			imageConverter.convertToLab();
-			set_imageViewPreview_textViewStatus(image_preview_ip);
-			textView_status.setText("Lab");
-		}
-		catch(IllegalArgumentException e) {
-			image_convertFailedMessage(e.getMessage());
-		}
-	}
-		
-	@FXML
-	public void image_convertRGBStackToLab() {
-		
-		image_preview_ip = new ImagePlus();
-		image_preview_ip.setImage(image);
-		
-		try {
-			ImageConverter imageConverter = new ImageConverter(image_preview_ip);
-			imageConverter.convertRGBStackToRGB();
-			set_imageViewPreview_textViewStatus(image_preview_ip);
-			textView_status.setText("RGB Stack To Lab");
-		}
-		catch(IllegalArgumentException e) {
-			image_convertFailedMessage(e.getMessage());
-		}
-	}
-		
-	@FXML
-	public void image_convertHSBToRGB() {
-		
-		image_preview_ip = new ImagePlus();
-		image_preview_ip.setImage(image);
-		
-		try {
-			ImageConverter imageConverter = new ImageConverter(image_preview_ip);
-			imageConverter.convertHSBToRGB();
-			set_imageViewPreview_textViewStatus(image_preview_ip);
-			textView_status.setText("HSB To RGB");
-		}
-		catch(IllegalArgumentException e) {
-			image_convertFailedMessage(e.getMessage());
-		}
-	}
-		
-	@FXML
-	public void image_convertLabToRGB() {
-		
-		image_preview_ip = new ImagePlus();
-		image_preview_ip.setImage(image);
-		
-		try {
-			ImageConverter imageConverter = new ImageConverter(image_preview_ip);
-			imageConverter.convertLabToRGB();
-			textView_status.setText("Lab To RGB");
-		}
-		catch(IllegalArgumentException e) {
-			image_convertFailedMessage(e.getMessage());
-		}
-	}
-	
 	public void set_imageViewPreview_textViewStatus(ImagePlus image_preview_ip) {
 		
 		Image image_preview_fx = SwingFXUtils.toFXImage(image_preview_ip.getProcessor().getBufferedImage(), null);
@@ -260,7 +141,7 @@ public class Image_ConvertType_Controller {
 		
 		image = new ImagePlus();
 		
-		this.image.setImage(ip);
+		this.image = ip.duplicate();
 	}
 	
 	public Boolean getStageClosedOnExit() {

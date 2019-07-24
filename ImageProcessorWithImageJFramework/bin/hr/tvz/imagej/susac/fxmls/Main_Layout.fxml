@@ -6,9 +6,11 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollBar?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SeparatorMenuItem?>
-<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.SpinnerValueFactory.DoubleSpinnerValueFactory?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
@@ -94,6 +96,63 @@
    <left>
       <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
+            <HBox alignment="CENTER" prefHeight="49.0" prefWidth="387.0">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+               <children>
+                  <Button mnemonicParsing="false" onAction="#file_openImage">
+                     <graphic>
+                        <ImageView disable="true" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../../icons/openimage.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Open image" />
+                     </tooltip>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="button_save_all" disable="true" mnemonicParsing="false" onAction="#file_saveAll">
+                     <graphic>
+                        <ImageView disable="true" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true">
+                           <image>
+                              <Image url="@../../../../../../icons/save_all-512.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Save all" />
+                     </tooltip>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="button_close_all" disable="true" mnemonicParsing="false" onAction="#file_closeAllImage">
+                     <graphic>
+                        <ImageView disable="true" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../../icons/close.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Close all" />
+                     </tooltip>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+            <Separator prefWidth="200.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </Separator>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
                   <ImageView fx:id="iv_1" accessibleText="0" fitHeight="75.0" fitWidth="100.0" onMouseClicked="#iv_array_1_setCurrentImage_OnClick" pickOnBounds="true">
@@ -192,7 +251,88 @@
                   <Insets bottom="15.0" left="15.0" right="15.0" />
                </VBox.margin>
             </Separator>
-            <ImageView fx:id="iv_current_histogram" fitHeight="225.0" fitWidth="275.0" pickOnBounds="true" preserveRatio="true" />
+            <HBox alignment="CENTER" prefHeight="30.0" prefWidth="387.0">
+               <children>
+                  <Label nodeOrientation="RIGHT_TO_LEFT" prefHeight="18.0" prefWidth="95.0" text="Name:">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="label_current_image_name" prefHeight="22.0" prefWidth="210.0" text="None">
+                     <font>
+                        <Font name="Arial" size="15.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER" layoutX="15.0" layoutY="353.0" prefHeight="30.0" prefWidth="387.0">
+               <children>
+                  <Label nodeOrientation="RIGHT_TO_LEFT" prefHeight="18.0" prefWidth="95.0" text="Type:">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="label_current_image_type" prefHeight="22.0" prefWidth="210.0" text="None">
+                     <font>
+                        <Font name="Arial" size="15.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="413.0" prefHeight="30.0" prefWidth="387.0">
+               <children>
+                  <Label nodeOrientation="RIGHT_TO_LEFT" prefHeight="18.0" prefWidth="95.0" text="Dimensions:">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="label_current_image_dimensions" prefHeight="22.0" prefWidth="210.0" text="None">
+                     <font>
+                        <Font name="Arial" size="15.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="418.0" prefHeight="30.0" prefWidth="387.0">
+               <children>
+                  <Label nodeOrientation="RIGHT_TO_LEFT" prefHeight="18.0" prefWidth="95.0" text="Stack:">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="label_current_image_stack" prefHeight="22.0" prefWidth="210.0" text="None">
+                     <font>
+                        <Font name="Arial" size="15.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+            <Separator prefWidth="200.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </Separator>
          </children>
          <BorderPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -200,7 +340,7 @@
       </VBox>
    </left>
    <center>
-      <VBox fx:id="vbox_current_image" alignment="TOP_CENTER" disable="true" prefHeight="200.0" prefWidth="100.0" visible="false" BorderPane.alignment="CENTER">
+      <VBox fx:id="vbox_current_image_1" alignment="TOP_CENTER" disable="true" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
             <Label text="CURRENT IMAGE">
                <VBox.margin>
@@ -331,6 +471,21 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
                   </Button>
+                  <Button fx:id="button_image_statistics_rgb" mnemonicParsing="false" onAction="#main_image_statistics_rgb">
+                     <graphic>
+                        <ImageView disable="true" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true">
+                           <image>
+                              <Image url="@../../../../../../icons/RGB-icon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Show RGB Stats" />
+                     </tooltip>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
                </children>
             </HBox>
             <ImageView fx:id="iv_current_image" fitHeight="425.0" fitWidth="575.0" pickOnBounds="true">
@@ -343,6 +498,30 @@
             </ImageView>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
+                  <Label text="X">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Spinner fx:id="spinner_roi_x" nodeOrientation="RIGHT_TO_LEFT" prefHeight="26.0" prefWidth="100.0">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="25.0" top="5.0" />
+                     </HBox.margin>
+                     <valueFactory>
+                     	<SpinnerValueFactory.DoubleSpinnerValueFactory amountToStepBy="1" initialValue="5" max="100" min="1" />
+                     </valueFactory>
+                  </Spinner>
+                  <Label fx:id="label_roi_x" alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="40.0" text="0">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
                   <ImageView fitHeight="35.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../../../../icons/math-mathematical-expression-coordinates-x-y-512.png" />
@@ -351,7 +530,7 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
                   </ImageView>
-                  <Label fx:id="label_roi_x" text="0">
+                  <Label fx:id="label_roi_y" prefHeight="27.0" prefWidth="40.0" text="0">
                      <HBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
@@ -359,15 +538,15 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label text=";">
+                  <Spinner fx:id="spinner_roi_y" nodeOrientation="LEFT_TO_RIGHT" prefHeight="26.0" prefWidth="100.0">
                      <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="5.0" left="25.0" right="5.0" top="5.0" />
                      </HBox.margin>
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="label_roi_y" text="0">
+                     <valueFactory>
+                     	<SpinnerValueFactory.DoubleSpinnerValueFactory amountToStepBy="1" initialValue="5" max="100" min="1" />
+                     </valueFactory>
+                  </Spinner>
+                  <Label text="Y">
                      <HBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
@@ -447,14 +626,16 @@
                         <Image url="@../../../../../../icons/SoftwareIcons-44-512.png" />
                      </image>
                   </ImageView>
-                  <Slider fx:id="slider_zoom" blockIncrement="1.0" majorTickUnit="1.0" max="6.0" min="1.0" minorTickCount="0" onMouseDragged="#show_image_roi" onMouseReleased="#show_image_roi" prefHeight="38.0" prefWidth="150.0" showTickLabels="true" showTickMarks="true" value="1.0">
+                  <ScrollBar fx:id="scroll_zoom" min="1.0" onMouseClicked="#show_image_roi" onMouseDragged="#show_image_roi" onMouseMoved="#show_image_roi" prefHeight="14.0" prefWidth="172.0" value="1.0">
                      <HBox.margin>
-                        <Insets bottom="5.0" right="10.0" top="15.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
-                     <tooltip>
-                        <Tooltip text="Zoom" />
-                     </tooltip>
-                  </Slider>
+                  </ScrollBar>
+                  <Label fx:id="label_zoom_value" alignment="CENTER" prefHeight="18.0" prefWidth="30.0" text="1">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Label>
                   <Button mnemonicParsing="false" onAction="#show_imagej_roi">
                      <graphic>
                         <ImageView disable="true" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
@@ -469,6 +650,18 @@
                      <HBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
+                  </Button>
+                  <Button fx:id="button_image_statistics_rgb_roi" mnemonicParsing="false" onAction="#main_image_statistics_rgb_roi">
+                     <graphic>
+                        <ImageView disable="true" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true">
+                           <image>
+                              <Image url="@../../../../../../icons/RGB-icon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Show RGB Stats" />
+                     </tooltip>
                   </Button>
                   <Button mnemonicParsing="false" onAction="#reset_image_roi">
                      <graphic>
@@ -493,4 +686,41 @@
          </BorderPane.margin>
       </VBox>
    </center>
+   <right>
+      <VBox fx:id="vbox_current_image_2" alignment="CENTER" disable="true" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Histogram">
+               <font>
+                  <Font name="Arial Black" size="20.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </Label>
+            <ImageView fx:id="iv_current_histogram" fitHeight="200.0" fitWidth="250.0" pickOnBounds="true">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+               <image>
+                  <Image url="@../../../../../../empty-image.png" />
+               </image></ImageView>
+            <Label layoutX="88.0" layoutY="15.0" text="ROI">
+               <font>
+                  <Font name="Arial Black" size="20.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="iv_current_roi_histogram" fitHeight="200.0" fitWidth="250.0" layoutX="15.0" layoutY="235.0" pickOnBounds="true">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+               <image>
+                  <Image url="@../../../../../../empty-image.png" />
+               </image>
+            </ImageView>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </BorderPane.margin>
+      </VBox>
+   </right>
 </BorderPane>

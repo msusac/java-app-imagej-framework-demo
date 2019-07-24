@@ -19,7 +19,7 @@
             <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
          </BorderPane.margin>
          <image>
-            <Image url="@../../../../../../../template_image.png" />
+            <Image url="@../../../../../../../empty-image.png" />
          </image>
       </ImageView>
    </center>

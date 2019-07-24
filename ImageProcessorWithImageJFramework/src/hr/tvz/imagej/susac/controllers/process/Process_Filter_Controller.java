@@ -66,7 +66,7 @@ public class Process_Filter_Controller {
 	public void imageView_filter_preview() {
 		
 		image_preview_ip = new ImagePlus();
-		image_preview_ip.setImage(image.getImage());
+		image_preview_ip = image.duplicate();
 		
 		RankFilters rankFilter = new RankFilters();
 		rankFilter.rank(image_preview_ip.getProcessor(), 
@@ -78,10 +78,9 @@ public class Process_Filter_Controller {
 	}
 	
 	public void setImage(ImagePlus ip) {
-		
 		image = new ImagePlus();
 		
-		this.image.setImage(ip.getImage());
+		this.image = ip.duplicate();
 	}
 	
 	public Boolean getStageClosedOnExit() {

@@ -118,7 +118,7 @@ public class Image_Threshold_Adjust_Controller {
 	public void imageView_threshold_preview() {
 		
 		image_preview_ip = new ImagePlus();
-		image_preview_ip.setImage(image.getImage());
+		image_preview_ip = image.duplicate();
 		
 		lut = comboBox_lut.getValue().getDisplayLutValue();
 		
@@ -131,7 +131,7 @@ public class Image_Threshold_Adjust_Controller {
 	public void setImage(ImagePlus ip) {
 		
 		image = new ImagePlus();
-		image.setImage(ip);
+		image = ip.duplicate();
 		
 	}
 	
