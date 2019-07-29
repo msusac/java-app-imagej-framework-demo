@@ -11,7 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-public class Main_Image_Statistics_RGB {
+public class Main_Image_Statistics_RGB_Controller {
 
 	@FXML
 	public Button button_exit;

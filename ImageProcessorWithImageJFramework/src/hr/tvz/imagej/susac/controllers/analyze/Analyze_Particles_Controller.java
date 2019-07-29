@@ -16,7 +16,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollBar;
-import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -117,7 +116,13 @@ public class Analyze_Particles_Controller {
 	public TableView<Particle_Result_Domain> tableView;
 	
 	@FXML
-	public ToggleButton toogleButton_pixel_size_max_infinite;
+	public ToggleButton toggleButton_pixel_size_max_infinite;
+	
+	@FXML
+	public ToggleButton toggleButton_include_holes;
+	
+	@FXML
+	public ToggleButton toggleButton_exclude_edges;
 	
 	private ImagePlus image = new ImagePlus();
 	private ImagePlus image_preview = new ImagePlus();
@@ -163,8 +168,15 @@ public class Analyze_Particles_Controller {
 		double circularity_max = spinner_circurality_max.getValue();
 		
 		int option = comboBox_options.getValue().getDisplayOptionValue();
+		
+		if(toggleButton_include_holes.isSelected()) {
+			option += ParticleAnalyzer.INCLUDE_HOLES;
+		}
+		if(toggleButton_exclude_edges.isSelected()) {
+			option += ParticleAnalyzer.EXCLUDE_EDGE_PARTICLES;
+		}
 	
-		if(toogleButton_pixel_size_max_infinite.isSelected()) {
+		if(toggleButton_pixel_size_max_infinite.isSelected()) {
 			pixel_size_max = Double.POSITIVE_INFINITY;
 		}
 		
@@ -234,7 +246,7 @@ public class Analyze_Particles_Controller {
 		
 		int option = comboBox_options.getValue().getDisplayOptionValue();
 		
-		if(toogleButton_pixel_size_max_infinite.isSelected()) {
+		if(toggleButton_pixel_size_max_infinite.isSelected()) {
 			pixel_size_max = Double.POSITIVE_INFINITY;
 		}
 		
@@ -339,7 +351,6 @@ public class Analyze_Particles_Controller {
 		else {
 			roi_x = 0;
 			roi_y = 0;
-			
 			cropped.setRoi(0 , 0, image.getWidth() / value_zoom, image.getHeight() / value_zoom);
 			
 			image.setProcessor(cropped.crop());
@@ -358,7 +369,7 @@ public class Analyze_Particles_Controller {
 		ImagePlus image = new ImagePlus();
 		image = image_preview.duplicate();
 		
-		ImageProcessor cropped = image.getProcessor(); //image from currently selected roi
+		ImageProcessor cropped = image.getProcessor();
 		
 		Integer value_zoom = (int) scroll_zoom.getValue();
 		
@@ -378,9 +389,9 @@ public class Analyze_Particles_Controller {
 	}
 	
 	@FXML
-	public void toogle_button_action() {
+	public void toggle_button_action() {
 		
-		if(toogleButton_pixel_size_max_infinite.isSelected()) {
+		if(toggleButton_pixel_size_max_infinite.isSelected()) {
 			spinner_pixel_size_max.setDisable(true);
 		}
 		else {

@@ -1,6 +1,7 @@
 package hr.tvz.imagej.susac.controllers.process;
 
 import ij.ImagePlus;
+import ij.plugin.filter.GaussianBlur;
 import ij.process.ImageProcessor;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
@@ -11,7 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-public class Process_Add_Noise_Controller {
+public class Process_Filter_Gaussian_Blur_Controller {
 
 	@FXML
 	public Button button_adjust;
@@ -23,7 +24,7 @@ public class Process_Add_Noise_Controller {
 	public ImageView imageView_preview;
 	
 	@FXML
-	public TextField tf_value;
+	public TextField tf_sigma;
 	
 	public boolean stage_closed_on_exit_status = true;
 	
@@ -32,10 +33,10 @@ public class Process_Add_Noise_Controller {
 	
 	@FXML
 	public void initialize() {
-		tf_value.textProperty().addListener((observable, oldValue, newValue) -> {
+		tf_sigma.textProperty().addListener((observable, oldValue, newValue) -> {
 		    if (newValue.matches("\\d*(\\.\\d*)?") && newValue.chars().filter(ch -> ch == '.').count() <= 1)
 		    	return;
-		    tf_value.setText("1.0");
+		    tf_sigma.setText("1.0");
 		});
 	}
 	@FXML
@@ -60,26 +61,29 @@ public class Process_Add_Noise_Controller {
 		image_preview_ip = new ImagePlus();
 		image_preview_ip = image.duplicate();
 		
-		tf_value.setText("1.0");
-		image_preview_ip.getProcessor().noise(1.0);
+		tf_sigma.setText("1.0");
+		
+		GaussianBlur gaussianBlur = new GaussianBlur();
+		gaussianBlur.blurGaussian(image_preview_ip.getProcessor(), 1.0);
 
 		Image image_preview_fx = SwingFXUtils.toFXImage(image_preview_ip.getBufferedImage(), null);
 		imageView_preview.setImage(image_preview_fx);
 	}
 	
 	@FXML
-	public void imageView_add_noise_preview() {
+	public void imageView_gaussian_blur_preview() {
 		
 		image_preview_ip = new ImagePlus();
 		image_preview_ip = image.duplicate();
 		
-		if(tf_value.getText().isEmpty()) {
-			tf_value.setText("1.0");
+		if(tf_sigma.getText().isEmpty()) {
+			tf_sigma.setText("1.0");
 		}
 		
+		Double sigma = Double.valueOf(tf_sigma.getText());
 		
-		Double noise_value = Double.valueOf(tf_value.getText());
-		image_preview_ip.getProcessor().noise(noise_value);
+		GaussianBlur gaussianBlur = new GaussianBlur();
+		gaussianBlur.blurGaussian(image_preview_ip.getProcessor(), sigma);
 
 		Image image_preview_fx = SwingFXUtils.toFXImage(image_preview_ip.getBufferedImage(), null);
 		imageView_preview.setImage(image_preview_fx);

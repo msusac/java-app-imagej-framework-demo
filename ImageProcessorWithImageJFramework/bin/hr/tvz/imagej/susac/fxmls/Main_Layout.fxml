@@ -11,6 +11,7 @@
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.SpinnerValueFactory.DoubleSpinnerValueFactory?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
@@ -57,7 +58,13 @@
             </Menu>
             <Menu fx:id="process_menu" mnemonicParsing="false" text="Process">
                <items>
-                  <MenuItem fx:id="process_menuItem_filters" disable="true" mnemonicParsing="false" onAction="#process_filter" text="Filters..." />
+                  <Menu fx:id="process_menu_filters" disable="true" mnemonicParsing="false" text="Filtering">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#process_filter" text="Filters..." />
+                        <MenuItem mnemonicParsing="false" onAction="#process_filter_gaussian_blur" text="Gaussian Blur" />
+                        <MenuItem mnemonicParsing="false" onAction="#process_filter_unsharp_mask" text="Unsharp Mask" />
+                     </items>
+                  </Menu>
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <Menu fx:id="process_menu_noise" disable="true" mnemonicParsing="false" text="Noise">
                     <items>
@@ -251,83 +258,22 @@
                   <Insets bottom="15.0" left="15.0" right="15.0" />
                </VBox.margin>
             </Separator>
-            <HBox alignment="CENTER" prefHeight="30.0" prefWidth="387.0">
-               <children>
-                  <Label nodeOrientation="RIGHT_TO_LEFT" prefHeight="18.0" prefWidth="95.0" text="Name:">
-                     <font>
-                        <Font name="Arial Rounded MT Bold" size="15.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="label_current_image_name" prefHeight="22.0" prefWidth="210.0" text="None">
-                     <font>
-                        <Font name="Arial" size="15.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="5.0" right="5.0" />
-                     </HBox.margin>
-                  </Label>
-               </children>
+            <Label text="IMAGE INFO">
+               <font>
+                  <Font name="Impact" size="24.0" />
+               </font>
                <VBox.margin>
-                  <Insets left="5.0" right="5.0" />
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </VBox.margin>
-            </HBox>
-            <HBox alignment="CENTER" layoutX="15.0" layoutY="353.0" prefHeight="30.0" prefWidth="387.0">
-               <children>
-                  <Label nodeOrientation="RIGHT_TO_LEFT" prefHeight="18.0" prefWidth="95.0" text="Type:">
-                     <font>
-                        <Font name="Arial Rounded MT Bold" size="15.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="label_current_image_type" prefHeight="22.0" prefWidth="210.0" text="None">
-                     <font>
-                        <Font name="Arial" size="15.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="5.0" right="5.0" />
-                     </HBox.margin>
-                  </Label>
-               </children>
+            </Label>
+            <TextArea fx:id="ta_current_image" editable="false" prefHeight="180.0" prefWidth="367.0">
                <VBox.margin>
-                  <Insets left="5.0" right="5.0" />
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
-            </HBox>
-            <HBox alignment="CENTER" layoutX="10.0" layoutY="413.0" prefHeight="30.0" prefWidth="387.0">
-               <children>
-                  <Label nodeOrientation="RIGHT_TO_LEFT" prefHeight="18.0" prefWidth="95.0" text="Dimensions:">
-                     <font>
-                        <Font name="Arial Rounded MT Bold" size="15.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="label_current_image_dimensions" prefHeight="22.0" prefWidth="210.0" text="None">
-                     <font>
-                        <Font name="Arial" size="15.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="5.0" right="5.0" />
-                     </HBox.margin>
-                  </Label>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" layoutX="10.0" layoutY="418.0" prefHeight="30.0" prefWidth="387.0">
-               <children>
-                  <Label nodeOrientation="RIGHT_TO_LEFT" prefHeight="18.0" prefWidth="95.0" text="Stack:">
-                     <font>
-                        <Font name="Arial Rounded MT Bold" size="15.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="label_current_image_stack" prefHeight="22.0" prefWidth="210.0" text="None">
-                     <font>
-                        <Font name="Arial" size="15.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="5.0" right="5.0" />
-                     </HBox.margin>
-                  </Label>
-               </children>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </HBox>
+               <font>
+                  <Font name="Arial" size="15.0" />
+               </font>
+            </TextArea>
             <Separator prefWidth="200.0">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -620,18 +566,18 @@
                   </Button>
                   <ImageView fitHeight="35.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                      <HBox.margin>
-                        <Insets bottom="5.0" left="15.0" right="5.0" top="5.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
                      <image>
                         <Image url="@../../../../../../icons/SoftwareIcons-44-512.png" />
                      </image>
                   </ImageView>
-                  <ScrollBar fx:id="scroll_zoom" min="1.0" onMouseClicked="#show_image_roi" onMouseDragged="#show_image_roi" onMouseMoved="#show_image_roi" prefHeight="14.0" prefWidth="172.0" value="1.0">
+                  <ScrollBar fx:id="scroll_zoom" min="1.0" onMouseClicked="#show_image_roi" onMouseDragged="#show_image_roi" onMouseMoved="#show_image_roi" prefHeight="14.0" prefWidth="165.0" value="1.0">
                      <HBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
                   </ScrollBar>
-                  <Label fx:id="label_zoom_value" alignment="CENTER" prefHeight="18.0" prefWidth="30.0" text="1">
+                  <Label fx:id="label_zoom_value" alignment="CENTER" prefHeight="18.0" prefWidth="61.0" text="1">
                      <HBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>

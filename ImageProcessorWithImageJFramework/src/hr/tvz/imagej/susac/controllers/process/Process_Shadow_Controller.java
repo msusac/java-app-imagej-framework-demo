@@ -21,6 +21,9 @@ public class Process_Shadow_Controller {
 	public Button button_cancel;
 	
 	@FXML
+	public Button button_reset;
+	
+	@FXML
 	public Button button_north_west;
 	
 	@FXML
@@ -64,7 +67,7 @@ public class Process_Shadow_Controller {
 	    Stage stage = (Stage) button_adjust.getScene().getWindow();
 	    stage.close();
 	}
-
+	
 	@FXML
 	public void button_cancel_action_event(ActionEvent event) {
 		
@@ -75,6 +78,15 @@ public class Process_Shadow_Controller {
 		
 	    Stage stage = (Stage) button_adjust.getScene().getWindow();
 	    stage.close();
+	}
+	
+	@FXML
+	public void button_reset_action_event(ActionEvent event) {
+		
+		image_preview_ip = new ImagePlus();
+		image_preview_ip = image.duplicate();
+		
+		set_imageViewPreview_textViewPosition(image_preview_ip, "NEUTRAL");
 	}
 	
 	@FXML

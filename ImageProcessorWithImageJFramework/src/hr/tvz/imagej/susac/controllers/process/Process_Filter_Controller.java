@@ -2,6 +2,7 @@ package hr.tvz.imagej.susac.controllers.process;
 
 import hr.tvz.imagej.susac.enums.Process_Filter_Types;
 import ij.ImagePlus;
+import ij.plugin.filter.GaussianBlur;
 import ij.plugin.filter.RankFilters;
 import ij.process.ImageProcessor;
 import javafx.embed.swing.SwingFXUtils;
@@ -9,7 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Spinner;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -29,7 +30,7 @@ public class Process_Filter_Controller {
 	public ImageView imageView_preview;
 	
 	@FXML
-	public Spinner<Double> spinner;
+	public TextField tf_radius;
 	
 	public boolean stage_closed_on_exit_status = true;
 	
@@ -41,6 +42,12 @@ public class Process_Filter_Controller {
 	    
 		comboBox_filter.getItems().addAll(Process_Filter_Types.values());
 	    comboBox_filter.getSelectionModel().select(Process_Filter_Types.MEAN);
+	    
+	    tf_radius.textProperty().addListener((observable, oldValue, newValue) -> {
+		    if (newValue.matches("\\d*(\\.\\d*)?") && newValue.chars().filter(ch -> ch == '.').count() <= 1)
+		    	return;
+		    tf_radius.setText("1.0");
+		});
 	}
 	
 	@FXML
@@ -63,15 +70,39 @@ public class Process_Filter_Controller {
 	}
 	
 	@FXML
+	public void button_reset_action_event(ActionEvent event) {
+		
+		image_preview_ip = new ImagePlus();
+		image_preview_ip = image.duplicate();
+		
+		comboBox_filter.getSelectionModel().select(Process_Filter_Types.MEAN);
+		tf_radius.setText("1.0");
+		
+		RankFilters rankFilter = new RankFilters();
+		
+		rankFilter.rank(image_preview_ip.getProcessor(), 
+		        1.0, 
+		        comboBox_filter.getValue().getDisplayFilterValue());
+
+		Image image_preview_fx = SwingFXUtils.toFXImage(image_preview_ip.getBufferedImage(), null);
+		imageView_preview.setImage(image_preview_fx);
+	}
+	
+	@FXML
 	public void imageView_filter_preview() {
 		
 		image_preview_ip = new ImagePlus();
 		image_preview_ip = image.duplicate();
 		
+		if(tf_radius.getText().isEmpty()) {
+			tf_radius.setText("1.0");
+		}
+		
+		Double radius = Double.valueOf(tf_radius.getText());
+		
 		RankFilters rankFilter = new RankFilters();
-		rankFilter.rank(image_preview_ip.getProcessor(), 
-				        spinner.getValue(), 
-				        comboBox_filter.getValue().getDisplayFilterValue());
+		rankFilter.rank(image_preview_ip.getProcessor(), radius, 
+							comboBox_filter.getValue().getDisplayFilterValue());
 		
 		Image image_preview_fx = SwingFXUtils.toFXImage(image_preview_ip.getBufferedImage(), null);
 		imageView_preview.setImage(image_preview_fx);

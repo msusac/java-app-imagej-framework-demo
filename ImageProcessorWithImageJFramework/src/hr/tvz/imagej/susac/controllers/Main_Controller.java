@@ -11,12 +11,17 @@ import hr.tvz.imagej.susac.controllers.image.Image_Threshold_Adjust_Controller;
 import hr.tvz.imagej.susac.controllers.image.Image_Threshold_Auto_Controller;
 import hr.tvz.imagej.susac.controllers.process.Process_Add_Noise_Controller;
 import hr.tvz.imagej.susac.controllers.process.Process_Filter_Controller;
+import hr.tvz.imagej.susac.controllers.process.Process_Filter_Gaussian_Blur_Controller;
+import hr.tvz.imagej.susac.controllers.process.Process_Filter_Unsharp_Mask_Controller;
 import hr.tvz.imagej.susac.controllers.process.Process_Shadow_Controller;
 import hr.tvz.imagej.susac.enums.Image_Types;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.gui.HistogramWindow;
+import ij.plugin.ImageInfo;
 import ij.plugin.filter.RankFilters;
+import ij.plugin.filter.UnsharpMask;
+import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import ij.process.ImageStatistics;
 import javafx.application.Platform;
@@ -36,6 +41,7 @@ import javafx.scene.control.ScrollBar;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -58,18 +64,6 @@ public class Main_Controller {
 	
 	@FXML
 	public Button button_image_statistics_rgb_roi;
-	
-	@FXML
-	public Label label_current_image_dimensions;
-	
-	@FXML
-	public Label label_current_image_name;
-
-	@FXML
-	public Label label_current_image_stack;
-	
-	@FXML
-	public Label label_current_image_type;
 	
 	@FXML
 	public Label label_roi_x;
@@ -111,16 +105,16 @@ public class Main_Controller {
 	public Menu image_menu_threshold;
 	
 	@FXML
-	public MenuItem process_menuItem_filters;
+	public Menu process_menu_filters;
 	
 	@FXML
 	public MenuItem process_menuItem_shadow;
 
 	@FXML 
-	public MenuItem process_menu_noise;
+	public Menu process_menu_noise;
 	
 	@FXML
-	public MenuItem process_menu_others;
+	public Menu process_menu_others;
 	
 	@FXML
 	public ImageView iv_1;
@@ -180,6 +174,9 @@ public class Main_Controller {
 	public Text textMessage;
 	
 	@FXML
+	public TextArea ta_current_image;
+	
+	@FXML
 	public VBox vbox_current_image_1;
 	
 	@FXML
@@ -221,7 +218,7 @@ public class Main_Controller {
 	        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmls/Main_Image_Statistics_RGB_Layout.fxml"));
 	        Parent root = (Parent) loader.load();
 	        
-	        Main_Image_Statistics_RGB controller = loader.<Main_Image_Statistics_RGB>getController();
+	        Main_Image_Statistics_RGB_Controller controller = loader.<Main_Image_Statistics_RGB_Controller>getController();
 	        controller.setImage(current_image.duplicate());
 	        
 	        Stage stage = new Stage();
@@ -265,7 +262,7 @@ public class Main_Controller {
 			
 			image.setProcessor(cropped.crop());
 	        
-	        Main_Image_Statistics_RGB controller = loader.<Main_Image_Statistics_RGB>getController();
+	        Main_Image_Statistics_RGB_Controller controller = loader.<Main_Image_Statistics_RGB_Controller>getController();
 	        controller.setImage(image.duplicate());
 	        
 	        Stage stage = new Stage();
@@ -800,6 +797,66 @@ public class Main_Controller {
 	}
 	
 	@FXML
+	public void process_filter_gaussian_blur() {
+		
+		try {
+	        
+	        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmls/process/Process_Filter_Gaussian_Blur_Layout.fxml"));
+	        Parent root = (Parent) loader.load();
+	        
+	        Process_Filter_Gaussian_Blur_Controller controller = loader.<Process_Filter_Gaussian_Blur_Controller>getController();
+	        controller.setImage(current_image.duplicate());
+	        
+	        Stage stage = new Stage();
+	        
+	        stage.setResizable(false);
+	        stage.initModality(Modality.APPLICATION_MODAL);
+	        stage.initStyle(StageStyle.UTILITY);
+			stage.setTitle("Gaussian Blur Filter preview for " + current_image.getTitle());
+			stage.setScene(new Scene(root));
+			
+			stage.showAndWait();
+			
+			if(!controller.getStageClosedOnExit()) {
+				setImageProcessor(controller.getImageProcessor());
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@FXML
+	public void process_filter_unsharp_mask() {
+		
+		try {
+	        
+	        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmls/process/Process_Filter_Unsharp_Mask_Layout.fxml"));
+	        Parent root = (Parent) loader.load();
+	        
+	        Process_Filter_Unsharp_Mask_Controller controller = loader.<Process_Filter_Unsharp_Mask_Controller>getController();
+	        controller.setImage(current_image.duplicate());
+	        
+	        Stage stage = new Stage();
+	        
+	        stage.setResizable(false);
+	        stage.initModality(Modality.APPLICATION_MODAL);
+	        stage.initStyle(StageStyle.UTILITY);
+			stage.setTitle("Unsharp Mask Filter preview for " + current_image.getTitle());
+			stage.setScene(new Scene(root));
+			
+			stage.showAndWait();
+			
+			if(!controller.getStageClosedOnExit()) {
+				setImageProcessor(controller.getImageProcessor());
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@FXML
 	public void process_shadow() {
 		
 		try {
@@ -1111,7 +1168,7 @@ public class Main_Controller {
 		image_menuItem_brightness_contrast.setDisable(false);
 		image_menuItem_convert_type.setDisable(false);
 		image_menu_threshold.setDisable(false);
-		process_menuItem_filters.setDisable(false);
+		process_menu_filters.setDisable(false);
 	    process_menuItem_shadow.setDisable(false);
 		process_menu_noise.setDisable(false);
 		process_menu_others.setDisable(false);
@@ -1134,7 +1191,7 @@ public class Main_Controller {
 		image_menuItem_brightness_contrast.setDisable(true);
 		image_menuItem_convert_type.setDisable(true);
 		image_menu_threshold.setDisable(true);
-		process_menuItem_filters.setDisable(true);
+		process_menu_filters.setDisable(true);
 	    process_menuItem_shadow.setDisable(true);
 		process_menu_noise.setDisable(true);
 		process_menu_others.setDisable(true);
@@ -1149,10 +1206,7 @@ public class Main_Controller {
 		iv_current_histogram.setImage(default_image);
 		iv_current_roi_histogram.setImage(default_image);
 		
-		label_current_image_name.setText("None");
-		label_current_image_type.setText("None");
-		label_current_image_dimensions.setText("None");
-		label_current_image_stack.setText("None");
+		ta_current_image.setText("");
 		
 		button_close_all.setDisable(true);
 		button_save_all.setDisable(true);
@@ -1182,7 +1236,6 @@ public class Main_Controller {
 			
 			show_image_roi();
 			getImageStats(current_image);
-			
 			onImageOpened();
 		}
 	}
@@ -1246,22 +1299,7 @@ public class Main_Controller {
 	
 	public void getImageStats(ImagePlus ip) {
 		
-		label_current_image_name.setText(ip.getTitle());
-		
-		Integer i = ip.getType();
-		String type = Image_Types.values()[i].getDisplayImageTypeName();
-		label_current_image_type.setText(type);
-		
-		String dimensions = String.valueOf(ip.getWidth() + " " + "X" + " " + ip.getHeight());
-		label_current_image_dimensions.setText(dimensions);
-		
-		if(ip.getImageStackSize() > 1) {
-			String stack = String.valueOf("C:" + ip.getNChannels() + " " + "S:" + ip.getNSlices() + " " + "F:" + ip.getNFrames());
-			label_current_image_stack.setText(stack);
-		}
-		else {
-			label_current_image_stack.setText("None");
-		}
-		
+		ImageInfo ii = new ImageInfo();
+		ta_current_image.setText(ii.getImageInfo(ip));
 	}
 }
