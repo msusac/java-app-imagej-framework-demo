@@ -20,8 +20,6 @@ import ij.ImagePlus;
 import ij.gui.HistogramWindow;
 import ij.plugin.ImageInfo;
 import ij.plugin.filter.RankFilters;
-import ij.plugin.filter.UnsharpMask;
-import ij.process.FloatProcessor;
 import ij.process.ImageProcessor;
 import ij.process.ImageStatistics;
 import javafx.application.Platform;
@@ -42,9 +40,11 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -64,6 +64,18 @@ public class Main_Controller {
 	
 	@FXML
 	public Button button_image_statistics_rgb_roi;
+	
+	@FXML
+	public HBox hbox_stack;
+	
+	@FXML
+	public Label label_stack_channel;
+	
+	@FXML
+	public Label label_stack_frame;
+	
+	@FXML
+	public Label label_stack_slice;
 	
 	@FXML
 	public Label label_roi_x;
@@ -177,6 +189,15 @@ public class Main_Controller {
 	public TextArea ta_current_image;
 	
 	@FXML
+	public TextField tf_stack_channel;
+	
+	@FXML
+	public TextField tf_stack_frame;
+	
+	@FXML
+	public TextField tf_stack_slice;
+	
+	@FXML
 	public VBox vbox_current_image_1;
 	
 	@FXML
@@ -192,9 +213,12 @@ public class Main_Controller {
 	
 	private ImagePlus current_image;
 	
+	private Integer position;
+	
 	@FXML
 	public void initialize() {
 		initialize_imageView_arrays();
+		initialize_textField_stack();
 		default_image = iv_1.getImage();
 	}
 	
@@ -211,6 +235,64 @@ public class Main_Controller {
 		iv_array.add(iv_9);
 	}
 	
+	public void initialize_textField_stack() {
+		
+		tf_stack_channel.textProperty().addListener((observable, oldValue, newValue) -> {
+		    if (newValue.matches("\\d*")) return;
+		    tf_stack_channel.setText("1");
+		});
+		tf_stack_frame.textProperty().addListener((observable, oldValue, newValue) -> {
+		    if (newValue.matches("\\d*")) return;
+		    tf_stack_frame.setText("1");
+		});
+		tf_stack_slice.textProperty().addListener((observable, oldValue, newValue) -> {
+		    if (newValue.matches("\\d*")) return;
+		    tf_stack_slice.setText("1");
+		});
+	}
+	@FXML
+	public void getImageStackPosition() {
+		
+		if(tf_stack_channel.getText().isEmpty()) {
+			tf_stack_channel.setText("1");
+		}
+		if(tf_stack_frame.getText().isEmpty()) {
+			tf_stack_frame.setText("1");
+		}
+		if(tf_stack_slice.getText().isEmpty()) {
+			tf_stack_slice.setText("1");
+		}
+
+		Integer channel = Integer.valueOf(tf_stack_channel.getText());
+		Integer frame = Integer.valueOf(tf_stack_frame.getText());
+		Integer slice = Integer.valueOf(tf_stack_slice.getText());
+		
+		if(channel < 1 || channel > current_image.getNChannels()) {
+			channel = 1;
+			tf_stack_channel.setText("1");
+		}
+		if(frame < 1 || frame > current_image.getNFrames()) {
+			frame = 1;
+			tf_stack_frame.setText("1");
+		}
+		if(slice < 1 || slice > current_image.getNSlices()) {
+			slice = 1;
+			tf_stack_slice.setText("1");
+		}
+		
+		position = channel * frame * slice;
+		
+		Image image_preview_fx = SwingFXUtils.toFXImage(current_image.getImageStack().getProcessor(position).getBufferedImage(), null);
+		iv_current_image.setImage(image_preview_fx);
+	
+		ImagePlus current_histogram = new ImagePlus();
+		current_histogram.setProcessor(current_image.getImageStack().getProcessor(position));
+		
+		HistogramWindow histogram = new HistogramWindow(current_histogram);
+		Image image_preview_histogram = SwingFXUtils.toFXImage(histogram.getImagePlus().getBufferedImage(), null);
+		iv_current_histogram.setImage(image_preview_histogram);
+	}
+	
 	@FXML
 	public void main_image_statistics_rgb() {
 		
@@ -218,8 +300,11 @@ public class Main_Controller {
 	        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmls/Main_Image_Statistics_RGB_Layout.fxml"));
 	        Parent root = (Parent) loader.load();
 	        
+	        ImagePlus image = new ImagePlus();
+	        image.setProcessor(current_image.getImageStack().getProcessor(position));
+	        
 	        Main_Image_Statistics_RGB_Controller controller = loader.<Main_Image_Statistics_RGB_Controller>getController();
-	        controller.setImage(current_image.duplicate());
+	        controller.setImage(image);
 	        
 	        Stage stage = new Stage();
 	        
@@ -244,9 +329,9 @@ public class Main_Controller {
 	        Parent root = (Parent) loader.load();
 	        
 	        ImagePlus image = new ImagePlus();
-			image = current_image.duplicate();
+	        image.setProcessor(current_image.getImageStack().getProcessor(position));
 			
-			ImageProcessor cropped = image.getProcessor(); //image from currently selected roi
+			ImageProcessor cropped = image.getProcessor();
 			
 			Integer value_zoom = (int) scroll_zoom.getValue();
 			
@@ -283,7 +368,10 @@ public class Main_Controller {
 	@FXML
 	public void analyze_particles() {
 		
-		ImageStatistics stats = current_image.getStatistics();
+		ImagePlus image = new ImagePlus();
+        image.setProcessor(current_image.getImageStack().getProcessor(position));
+        
+		ImageStatistics stats = image.getStatistics();
 		
 		if (stats.histogram[0] + stats.histogram[255] != stats.pixelCount) {
 			analyze_particles_alert();
@@ -307,8 +395,11 @@ public class Main_Controller {
 	        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmls/analyze/Analyze_Particles_Layout.fxml"));
 	        Parent root = (Parent) loader.load();
 	        
+	        ImagePlus image = new ImagePlus();
+	        image.setProcessor(current_image.getImageStack().getProcessor(position));
+	        
 	        Analyze_Particles_Controller controller = loader.<Analyze_Particles_Controller>getController();
-	        controller.setImage(current_image.duplicate());
+	        controller.setImage(image.duplicate());
 	        
 	        Stage stage = new Stage();
 	        
@@ -471,16 +562,6 @@ public class Main_Controller {
 			
 			Image image_preview_fx = SwingFXUtils.toFXImage(image.getProcessor().getBufferedImage(), null);
 			
-			if(image.getImageStackSize() > 1) {
-				ImagePlus image_test = new ImagePlus();
-				image_test.setImage(image.getImage());
-				image_test.setTitle(image.getTitle());
-				
-				image = new ImagePlus();
-				image = image_test.duplicate();
-				image.setTitle(image_test.getTitle() + " " + "(non-stack)");
-			}
-			
 			ip_array.add(image);
 			
 			iv_array.get(ip_array.size() - 1).setImage(image_preview_fx);
@@ -585,8 +666,11 @@ public class Main_Controller {
 	        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmls/image/Image_BrightnessContrast_Adjust_Layout.fxml"));
 	        Parent root = (Parent) loader.load();
 	        
+	        ImagePlus image = new ImagePlus();
+	        image.setProcessor(current_image.getImageStack().getProcessor(position));
+	        
 	        Image_BrightnessContrast_Adjust_Controller controller = loader.<Image_BrightnessContrast_Adjust_Controller>getController();
-	        controller.setImage(current_image.getProcessor().getMin(), current_image.getProcessor().getMax(), current_image.duplicate());
+	        controller.setImage(image.getProcessor().getMin(), image.getProcessor().getMax(), image.duplicate());
 	        
 	        Stage stage = new Stage();
 	        
@@ -659,8 +743,11 @@ public class Main_Controller {
 	        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmls/image/Image_Threshold_Adjust_Layout.fxml"));
 	        Parent root = (Parent) loader.load();
 	        
+	        ImagePlus image = new ImagePlus();
+	        image.setProcessor(current_image.getImageStack().getProcessor(position));
+	        
 	        Image_Threshold_Adjust_Controller controller = loader.<Image_Threshold_Adjust_Controller>getController();
-	        controller.setImage(current_image.duplicate());
+	        controller.setImage(image.duplicate());
 	        
 	        Stage stage = new Stage();
 	        
@@ -699,8 +786,11 @@ public class Main_Controller {
 	        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmls/image/Image_Threshold_Auto_Layout.fxml"));
 	        Parent root = (Parent) loader.load();
 	        
+	        ImagePlus image = new ImagePlus();
+	        image.setProcessor(current_image.getImageStack().getProcessor(position));
+	        
 	        Image_Threshold_Auto_Controller controller = loader.<Image_Threshold_Auto_Controller>getController();
-	        controller.setImage(current_image.duplicate());
+	        controller.setImage(image.duplicate());
 	        
 	        Stage stage = new Stage();
 	        
@@ -728,9 +818,10 @@ public class Main_Controller {
 			image_threshold_alert();
 		}
 		else {
+			
 			ImagePlus image_backup = new ImagePlus();
-			image_backup.setImage(current_image.duplicate());
-		
+	        image_backup.setProcessor(current_image.getImageStack().getProcessor(position));
+	        
 			image_backup.getProcessor().autoThreshold();
 		
 			setImageProcessor(image_backup.getProcessor());
@@ -748,7 +839,7 @@ public class Main_Controller {
 	public void process_find_edges() {
 		
 		ImagePlus image_backup = new ImagePlus();
-		image_backup = current_image.duplicate();
+        image_backup.setProcessor(current_image.getImageStack().getProcessor(position));
 	
 		image_backup.getProcessor().findEdges();
 	
@@ -759,7 +850,7 @@ public class Main_Controller {
 	public void process_invert() {
 		
 		ImagePlus image_backup = new ImagePlus();
-		image_backup = current_image.duplicate();
+		image_backup.setProcessor(current_image.getImageStack().getProcessor(position));
 	
 		image_backup.getProcessor().invert();
 	
@@ -774,8 +865,11 @@ public class Main_Controller {
 	        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmls/process/Process_Filter_Layout.fxml"));
 	        Parent root = (Parent) loader.load();
 	        
+	        ImagePlus image = new ImagePlus();
+			image.setProcessor(current_image.getImageStack().getProcessor(position));
+			
 	        Process_Filter_Controller controller = loader.<Process_Filter_Controller>getController();
-	        controller.setImage(current_image.duplicate());
+	        controller.setImage(image.duplicate());
 	        
 	        Stage stage = new Stage();
 	        
@@ -804,8 +898,11 @@ public class Main_Controller {
 	        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmls/process/Process_Filter_Gaussian_Blur_Layout.fxml"));
 	        Parent root = (Parent) loader.load();
 	        
+	        ImagePlus image = new ImagePlus();
+			image.setProcessor(current_image.getImageStack().getProcessor(position));
+	        
 	        Process_Filter_Gaussian_Blur_Controller controller = loader.<Process_Filter_Gaussian_Blur_Controller>getController();
-	        controller.setImage(current_image.duplicate());
+	        controller.setImage(image.duplicate());
 	        
 	        Stage stage = new Stage();
 	        
@@ -834,8 +931,11 @@ public class Main_Controller {
 	        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmls/process/Process_Filter_Unsharp_Mask_Layout.fxml"));
 	        Parent root = (Parent) loader.load();
 	        
+	        ImagePlus image = new ImagePlus();
+			image.setProcessor(current_image.getImageStack().getProcessor(position));
+	        
 	        Process_Filter_Unsharp_Mask_Controller controller = loader.<Process_Filter_Unsharp_Mask_Controller>getController();
-	        controller.setImage(current_image.duplicate());
+	        controller.setImage(image.duplicate());
 	        
 	        Stage stage = new Stage();
 	        
@@ -864,8 +964,11 @@ public class Main_Controller {
 	        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmls/process/Process_Shadow_Layout.fxml"));
 	        Parent root = (Parent) loader.load();
 	        
+	        ImagePlus image = new ImagePlus();
+			image.setProcessor(current_image.getImageStack().getProcessor(position));
+	        
 	        Process_Shadow_Controller controller = loader.<Process_Shadow_Controller>getController();
-	        controller.setImage(current_image.duplicate());
+	        controller.setImage(image.duplicate());
 	        
 	        Stage stage = new Stage();
 	        
@@ -890,7 +993,7 @@ public class Main_Controller {
 	public void process_sharpen() {
 		
 		ImagePlus image_backup = new ImagePlus();
-		image_backup = current_image.duplicate();
+		image_backup.setProcessor(current_image.getImageStack().getProcessor(position));
 	
 		image_backup.getProcessor().sharpen();
 	
@@ -901,7 +1004,7 @@ public class Main_Controller {
 	public void process_smooth() {
 		
 		ImagePlus image_backup = new ImagePlus();
-		image_backup = current_image.duplicate();
+		image_backup.setProcessor(current_image.getImageStack().getProcessor(position));
 	
 		image_backup.getProcessor().smooth();
 	
@@ -915,6 +1018,9 @@ public class Main_Controller {
 	        
 	        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmls/process/Process_Add_Noise_Layout.fxml"));
 	        Parent root = (Parent) loader.load();
+	        
+	        ImagePlus image= new ImagePlus();
+			image.setProcessor(current_image.getImageStack().getProcessor(position));
 	        
 	        Process_Add_Noise_Controller controller = loader.<Process_Add_Noise_Controller>getController();
 	        controller.setImage(current_image.duplicate());
@@ -943,7 +1049,7 @@ public class Main_Controller {
 	public void process_noise_despekle() {
 		
 		ImagePlus image_backup = new ImagePlus();
-		image_backup = current_image.duplicate();
+		image_backup.setProcessor(current_image.getImageStack().getProcessor(position));
 	
 		RankFilters filter = new RankFilters();
 		filter.rank(image_backup.getProcessor(), 1.0, RankFilters.MEDIAN);
@@ -1037,7 +1143,7 @@ public class Main_Controller {
 	public void show_image_roi() {
 		
 		ImagePlus image = new ImagePlus();
-		image = current_image.duplicate();
+		image.setProcessor(current_image.getImageStack().getProcessor(position));
 		
 		ImageProcessor cropped = image.getProcessor();
 		
@@ -1071,9 +1177,9 @@ public class Main_Controller {
 	public void show_imagej_roi() {
 		
 		ImagePlus image = new ImagePlus();
-		image = current_image.duplicate();
+		image.setProcessor(current_image.getImageStack().getProcessor(position));
 		
-		ImageProcessor cropped = image.getProcessor(); //image from currently selected roi
+		ImageProcessor cropped = image.getProcessor();
 		
 		Integer value_zoom = (int) scroll_zoom.getValue();
 		
@@ -1157,6 +1263,23 @@ public class Main_Controller {
 		}
 	}
 	
+	private void checkIfImageIsStack() {
+		
+		if(current_image.getNChannels() > 1) {
+			label_stack_channel.setText("(" + current_image.getNChannels() + ")");
+		}
+		if(current_image.getNFrames() > 1) {
+			label_stack_frame.setText("(" + current_image.getNFrames() + ")");
+		}
+		if(current_image.getNSlices() > 1) {
+			label_stack_slice.setText("(" + current_image.getNSlices() + ")");
+		}
+		
+		tf_stack_channel.setText("1");
+		tf_stack_frame.setText("1");
+		tf_stack_slice.setText("1");
+	}
+
 	private void onImageOpened() {
 		
 		analyze_particles.setDisable(false);
@@ -1213,21 +1336,34 @@ public class Main_Controller {
 		
 		button_image_statistics_rgb.setDisable(true);
 		button_image_statistics_rgb_roi.setDisable(true);
+		
+		label_stack_channel.setText("(1)");
+		label_stack_frame.setText("(1)");
+		label_stack_slice.setText("(1)");
+		
+		tf_stack_channel.setText("1");
+		tf_stack_frame.setText("1");
+		tf_stack_slice.setText("1");
 	}
 
 	private void setCurrentImage(Integer id) {
 		
 		if(id < ip_array.size()) {
 			
+			position = 1;
+			
 			current_image = new ImagePlus();
 			current_image = ip_array.get(id).duplicate();
 			current_image.setTitle(ip_array.get(id).getTitle());
 			
-			Image image_preview_fx = SwingFXUtils.toFXImage(current_image.getProcessor().getBufferedImage(), null);
+			Image image_preview_fx = SwingFXUtils.toFXImage(current_image.getImageStack().getProcessor(position).getBufferedImage(), null);
 			iv_current_image.setImage(image_preview_fx);
 			iv_current_image.setAccessibleText(String.valueOf(id));
 			
-			HistogramWindow histogram = new HistogramWindow(current_image);
+			ImagePlus current_histogram = new ImagePlus();
+			current_histogram.setProcessor(current_image.getImageStack().getProcessor(position));
+			
+			HistogramWindow histogram = new HistogramWindow(current_histogram);
 			Image image_preview_histogram = SwingFXUtils.toFXImage(histogram.getImagePlus().getBufferedImage(), null);
 			iv_current_histogram.setImage(image_preview_histogram);
 			
@@ -1237,6 +1373,7 @@ public class Main_Controller {
 			show_image_roi();
 			getImageStats(current_image);
 			onImageOpened();
+			checkIfImageIsStack();
 		}
 	}
 	
@@ -1244,17 +1381,25 @@ public class Main_Controller {
 		
 		Integer id = Integer.parseInt(iv_current_image.getAccessibleText());
 		
-		current_image.setProcessor(ip);
-		ip_array.get(id).setProcessor(ip);
-
-		Image image_preview_fx1 = SwingFXUtils.toFXImage(current_image.getProcessor().getBufferedImage(), null);
+		if(current_image.getImageStackSize() > 1) {
+			current_image.getImageStack().setProcessor(ip, position);
+			ip_array.get(id).getImageStack().setProcessor(ip, position);
+		}
+		else {
+			current_image.setProcessor(ip);
+			ip_array.get(id).setProcessor(ip);
+		}
+		
+		Image image_preview_fx1 = SwingFXUtils.toFXImage(current_image.getImageStack().getProcessor(position).getBufferedImage(), null);
 		iv_current_image.setImage(image_preview_fx1);
 		
-		Image image_preview_fx2 = SwingFXUtils.toFXImage(ip_array.get(id).getProcessor().getBufferedImage(), null);
+		Image image_preview_fx2 = SwingFXUtils.toFXImage(ip_array.get(id).getImageStack().getProcessor(position).getBufferedImage(), null);
 		iv_array.get(id).setImage(image_preview_fx2);
 		
-		HistogramWindow histogram = new HistogramWindow(current_image);
+		ImagePlus current_histogram = new ImagePlus();
+		current_histogram.setProcessor(current_image.getImageStack().getProcessor(position));
 		
+		HistogramWindow histogram = new HistogramWindow(current_histogram);
 		Image image_preview_histogram = SwingFXUtils.toFXImage(histogram.getImagePlus().getBufferedImage(), null);
 		iv_current_histogram.setImage(image_preview_histogram);
 		
@@ -1272,13 +1417,16 @@ public class Main_Controller {
 		current_image = ip.duplicate();
 		ip_array.get(id).setImage(ip.duplicate());
 		
-		Image image_preview_fx1 = SwingFXUtils.toFXImage(current_image.getBufferedImage(), null);
+		Image image_preview_fx1 = SwingFXUtils.toFXImage(current_image.getImageStack().getProcessor(position).getBufferedImage(), null);
 		iv_current_image.setImage(image_preview_fx1);
 	
-		Image image_preview_fx2 = SwingFXUtils.toFXImage(ip_array.get(id).getBufferedImage(), null);
+		Image image_preview_fx2 = SwingFXUtils.toFXImage(ip_array.get(id).getImageStack().getProcessor(position).getBufferedImage(), null);
 		iv_array.get(id).setImage(image_preview_fx2);
 		
-		HistogramWindow histogram = new HistogramWindow(current_image);
+		ImagePlus current_histogram = new ImagePlus();
+		current_histogram.setProcessor(current_image.getImageStack().getProcessor(position));
+		
+		HistogramWindow histogram = new HistogramWindow(current_histogram);
 		Image image_preview_histogram = SwingFXUtils.toFXImage(histogram.getImagePlus().getBufferedImage(), null);
 		iv_current_histogram.setImage(image_preview_histogram);
 		
