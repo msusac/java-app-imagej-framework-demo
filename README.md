@@ -15,6 +15,10 @@
 
 - Image Stiching 
 
+## Video 
+
+[![Watch the video](https://i.imgur.com/KHuHo9Y.png)](https://youtu.be/c6BrQ3A01lg)
+
 ## Screenshots
 
 <p float="left">
