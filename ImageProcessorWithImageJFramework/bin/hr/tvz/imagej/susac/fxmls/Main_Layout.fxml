@@ -91,6 +91,11 @@
                 <MenuItem fx:id="analyze_particles" disable="true" mnemonicParsing="false" onAction="#analyze_particles" text="Analyze Particles" />
               </items>
             </Menu>
+            <Menu mnemonicParsing="false" text="Stiching">
+              <items>
+                <MenuItem fx:id="stitching_menuItem_pairwise" disable="true" mnemonicParsing="false" onAction="#plugin_stiching_pairwise" text="Pairwise Stiching" />
+              </items>
+            </Menu>
          </menus>
       </MenuBar>
    </top>

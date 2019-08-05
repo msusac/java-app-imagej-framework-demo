@@ -6,6 +6,16 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/msusac/Desktop/ImageJ/ij.jar"/>
+	<classpathentry kind="lib" path="C:/Users/msusac/git/java-app-imagej-framework-demo/ImageProcessorWithImageJFramework/Jama-1.0.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/msusac/git/java-app-imagej-framework-demo/ImageProcessorWithImageJFramework/ij.jar"/>
+	<classpathentry kind="lib" path="C:/Users/msusac/git/java-app-imagej-framework-demo/ImageProcessorWithImageJFramework/plugins/Stiching/edu_mines_jtk.jar"/>
+	<classpathentry kind="lib" path="C:/Users/msusac/git/java-app-imagej-framework-demo/ImageProcessorWithImageJFramework/plugins/Stiching/Fiji_Plugins.jar"/>
+	<classpathentry kind="lib" path="C:/Users/msusac/git/java-app-imagej-framework-demo/ImageProcessorWithImageJFramework/plugins/Stiching/fiji-lib.jar"/>
+	<classpathentry kind="lib" path="C:/Users/msusac/git/java-app-imagej-framework-demo/ImageProcessorWithImageJFramework/plugins/Stiching/imglib.jar"/>
+	<classpathentry kind="lib" path="C:/Users/msusac/git/java-app-imagej-framework-demo/ImageProcessorWithImageJFramework/plugins/Stiching/imglib-algorithms.jar"/>
+	<classpathentry kind="lib" path="C:/Users/msusac/git/java-app-imagej-framework-demo/ImageProcessorWithImageJFramework/plugins/Stiching/imglib-ij.jar"/>
+	<classpathentry kind="lib" path="C:/Users/msusac/git/java-app-imagej-framework-demo/ImageProcessorWithImageJFramework/plugins/Stiching/loci_tools.jar"/>
+	<classpathentry kind="lib" path="C:/Users/msusac/git/java-app-imagej-framework-demo/ImageProcessorWithImageJFramework/plugins/Stiching/mpicbg.jar"/>
+	<classpathentry kind="lib" path="C:/Users/msusac/git/java-app-imagej-framework-demo/ImageProcessorWithImageJFramework/plugins/Stiching/Stitching_.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

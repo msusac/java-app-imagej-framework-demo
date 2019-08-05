@@ -14,12 +14,14 @@ import hr.tvz.imagej.susac.controllers.process.Process_Filter_Controller;
 import hr.tvz.imagej.susac.controllers.process.Process_Filter_Gaussian_Blur_Controller;
 import hr.tvz.imagej.susac.controllers.process.Process_Filter_Unsharp_Mask_Controller;
 import hr.tvz.imagej.susac.controllers.process.Process_Shadow_Controller;
+import hr.tvz.imagej.susac.controllers.stitching.Stitching_Pairwise_Controller;
 import hr.tvz.imagej.susac.enums.Image_Types;
 import ij.IJ;
 import ij.ImagePlus;
+import ij.WindowManager;
 import ij.gui.HistogramWindow;
-import ij.plugin.ImageInfo;
 import ij.plugin.filter.RankFilters;
+import ij.plugin.*;
 import ij.process.ImageProcessor;
 import ij.process.ImageStatistics;
 import javafx.application.Platform;
@@ -127,6 +129,9 @@ public class Main_Controller {
 	
 	@FXML
 	public Menu process_menu_others;
+	
+	@FXML
+	public MenuItem stitching_menuItem_pairwise;
 	
 	@FXML
 	public ImageView iv_1;
@@ -461,6 +466,10 @@ public class Main_Controller {
 		
 		ip_array.remove(ip_array.get(id));
 		
+		if(ip_array.size() == 0) {
+			stitching_menuItem_pairwise.setDisable(true);
+		}
+		
 		for(int i = 0; i < iv_array.size(); i++) {
 			iv_array.get(i).setImage(default_image);
 		}
@@ -497,6 +506,7 @@ public class Main_Controller {
 				}
 				
 				ip_array.removeAll(ip_array);
+				stitching_menuItem_pairwise.setDisable(true);
 				onImageClosed();
 			}
 		});
@@ -566,6 +576,8 @@ public class Main_Controller {
 			
 			iv_array.get(ip_array.size() - 1).setImage(image_preview_fx);
 			Tooltip.install(iv_array.get(ip_array.size() - 1), new Tooltip(image.getTitle().toString()));
+			
+			stitching_menuItem_pairwise.setDisable(false);
 			
 			file_openSuccessfullMessage(image.getTitle());
 			
@@ -1198,6 +1210,35 @@ public class Main_Controller {
 		image.show();
 	}
 	
+	@FXML
+	public void plugin_stiching_pairwise() {
+		
+		try {
+	        
+	        FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxmls/stitching/Stitching_Pairwise_Layout.fxml"));
+	        Parent root = (Parent) loader.load();
+	        
+			WindowManager.closeAllWindows();
+	        
+	        Stitching_Pairwise_Controller controller = loader.<Stitching_Pairwise_Controller>getController();
+	        controller.setImageArray(ip_array);
+	        
+	        Stage stage = new Stage();
+	        
+	        stage.setResizable(false);
+	        stage.initModality(Modality.APPLICATION_MODAL);
+	        stage.initStyle(StageStyle.UTILITY);
+			stage.setTitle("Pairwise Stitching");
+			stage.setScene(new Scene(root));
+			
+			stage.showAndWait();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	private void file_openSuccessfullMessage(String imageTitle) {
 		textMessage.setText(imageTitle + " " + "was successfully opened!");
 	}
@@ -1268,11 +1309,20 @@ public class Main_Controller {
 		if(current_image.getNChannels() > 1) {
 			label_stack_channel.setText("(" + current_image.getNChannels() + ")");
 		}
+		else {
+			label_stack_channel.setText("(1)");
+		}
 		if(current_image.getNFrames() > 1) {
 			label_stack_frame.setText("(" + current_image.getNFrames() + ")");
 		}
+		else {
+			label_stack_frame.setText("(1)");
+		}
 		if(current_image.getNSlices() > 1) {
 			label_stack_slice.setText("(" + current_image.getNSlices() + ")");
+		}
+		else {
+			label_stack_slice.setText("(1)");
 		}
 		
 		tf_stack_channel.setText("1");
@@ -1449,5 +1499,10 @@ public class Main_Controller {
 		
 		ImageInfo ii = new ImageInfo();
 		ta_current_image.setText(ii.getImageInfo(ip));
+	}
+	
+	public void setImage(ArrayList<ImagePlus> array) {
+		
+		this.ip_array = array;
 	}
 }
