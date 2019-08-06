@@ -94,6 +94,7 @@
             <Menu mnemonicParsing="false" text="Stiching">
               <items>
                 <MenuItem fx:id="stitching_menuItem_pairwise" disable="true" mnemonicParsing="false" onAction="#plugin_stiching_pairwise" text="Pairwise Stiching" />
+                  <MenuItem mnemonicParsing="false" onAction="#plugin_stitching_grid" text="Grid Stitching" />
               </items>
             </Menu>
          </menus>

@@ -1,10 +1,11 @@
 package hr.tvz.imagej.susac.controllers.stitching;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
-import ij.IJ;
 import ij.ImagePlus;
 import ij.WindowManager;
+import ij.io.FileSaver;
 import ij.plugin.*;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
@@ -16,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
+import javafx.stage.Stage;
 
 public class Stitching_Pairwise_Controller {
 
@@ -113,7 +115,13 @@ public class Stitching_Pairwise_Controller {
 	}
 	
 	@FXML
-	public void executeStitching() {
+	public void close() {
+		Stage stage = (Stage) button_close.getScene().getWindow();
+		stage.close();
+	}
+	
+	@FXML
+	public void executeStitching() throws RuntimeException, InvocationTargetException{
 		
 		Alert alert = new Alert(AlertType.INFORMATION, "Click on images that are opened right now!");
 		alert.setTitle("Warning!");
@@ -139,15 +147,22 @@ public class Stitching_Pairwise_Controller {
 		sp.run("");
 		
 		if(WindowManager.getWindow("") != null) {
-			IJ.selectWindow("");
 			
-			String name = tf_result_name.getText();
+			WindowManager.getImage("").setTitle(tf_result_name.getText());
 			
-			IJ.runMacro("rename('" + name + ".jpeg');");
+			ImagePlus result = new ImagePlus();
+			result = WindowManager.getImage(tf_result_name.getText()).duplicate();
+			
+			WindowManager.closeAllWindows();
+			
+			result.show();
 			
 			if(checkBox_save.isSelected()) {
-				IJ.saveAs("jpeg", "");
+				FileSaver filesaver = new FileSaver(result);
+				filesaver.saveAsJpeg();
 			}
+			
+			close();
 		}
 		else {
 			WindowManager.closeAllWindows();

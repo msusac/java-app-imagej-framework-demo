@@ -12,8 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/9.0.1" fx:controller="hr.tvz.imagej.susac.controllers.stitching.Stitching_Pairwise_Controller">
+<BorderPane xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.tvz.imagej.susac.controllers.stitching.Stitching_Pairwise_Controller">
    <center>
       <VBox alignment="CENTER" prefHeight="300.0" prefWidth="500.0" BorderPane.alignment="CENTER">
          <children>
@@ -155,7 +154,7 @@
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="button_close" minHeight="35.0" minWidth="100.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" text="Close">
+            <Button fx:id="button_close" minHeight="35.0" minWidth="100.0" mnemonicParsing="false" onAction="#close" prefHeight="35.0" prefWidth="100.0" text="Close">
                <HBox.margin>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </HBox.margin>

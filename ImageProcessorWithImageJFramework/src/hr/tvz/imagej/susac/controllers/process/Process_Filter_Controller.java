@@ -2,7 +2,6 @@ package hr.tvz.imagej.susac.controllers.process;
 
 import hr.tvz.imagej.susac.enums.Process_Filter_Types;
 import ij.ImagePlus;
-import ij.plugin.filter.GaussianBlur;
 import ij.plugin.filter.RankFilters;
 import ij.process.ImageProcessor;
 import javafx.embed.swing.SwingFXUtils;

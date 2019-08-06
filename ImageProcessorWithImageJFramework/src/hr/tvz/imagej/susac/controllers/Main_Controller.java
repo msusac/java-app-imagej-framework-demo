@@ -20,6 +20,7 @@ import ij.IJ;
 import ij.ImagePlus;
 import ij.WindowManager;
 import ij.gui.HistogramWindow;
+import ij.io.FileSaver;
 import ij.plugin.filter.RankFilters;
 import ij.plugin.*;
 import ij.process.ImageProcessor;
@@ -217,6 +218,7 @@ public class Main_Controller {
 	private Integer roi_y = 0;
 	
 	private ImagePlus current_image;
+	private ImagePlus stitching_result;
 	
 	private Integer position;
 	
@@ -1239,12 +1241,68 @@ public class Main_Controller {
 		
 	}
 	
+	@FXML
+	public void plugin_stitching_grid() {
+		
+		file_grid_stitching_running();
+		
+		WindowManager.closeAllWindows();
+		 
+		Stitching_Grid sg = new Stitching_Grid();
+		sg.run("");
+		
+		if(WindowManager.getWindow("") != null) {
+			
+			WindowManager.getImage("").setTitle("Stitching Result");
+			
+			stitching_result = new ImagePlus();
+			stitching_result = WindowManager.getImage("Stitching Result").duplicate();
+			
+			WindowManager.closeAllWindows();
+			
+			stitching_result.show();
+			
+			file_grid_stitching_done_success();
+			
+			Alert alert = new Alert(AlertType.CONFIRMATION, "Do you want to save stitched image?", 
+					ButtonType.NO, ButtonType.YES);
+			
+			alert.setTitle("Alert!");
+			
+			alert.showAndWait().ifPresent(type -> {
+				
+				if(type == ButtonType.YES) {
+					FileSaver filesaver = new FileSaver(stitching_result);
+					filesaver.saveAsJpeg();
+				}
+			});
+		}
+		else {
+			
+			WindowManager.closeAllWindows();
+			file_grid_stitching_cancelled();
+		}
+		
+	}
+	
 	private void file_openSuccessfullMessage(String imageTitle) {
 		textMessage.setText(imageTitle + " " + "was successfully opened!");
 	}
 	
 	private void file_closeSuccessfullMessage(String imageTitle) {
 		textMessage.setText(imageTitle + " " + "was successfully closed!");
+	}
+	
+	private void file_grid_stitching_running() {
+		textMessage.setText("Alert Grid Stitching Plugin is currently running!");
+	}
+	
+	private void file_grid_stitching_cancelled() {
+		textMessage.setText("Grid Stitching Operation was cancelled");
+	}
+	
+	private void file_grid_stitching_done_success() {
+		textMessage.setText("Grid Stitching Operation done!");
 	}
 	
 	@FXML
